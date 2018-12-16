@@ -16,9 +16,9 @@ export default {
     HelloWorld
   },
   created(){
-    let url = 'https://randomuser.me/api/'
+    let url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/products`
     this.axios.get(url).then((res)=>{
-      // console.log(res.data.results[0].email)
+      console.log(res)
     })
   }
 }
