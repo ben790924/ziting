@@ -3,13 +3,18 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 
-import Home from '@/components/HelloWorld'
-
+import Login from '@/components/pages/Login'
+import Home from '@/components/pages/Home'
 
 export default new VueRouter({
     routes:[
         {
-            name:'home',
+            name:'Login',
+            path:'/login',
+            component:Login
+        },
+        {
+            name:'Home',
             path:'/',
             component:Home
         },
