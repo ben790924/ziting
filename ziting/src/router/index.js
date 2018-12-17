@@ -9,6 +9,11 @@ import Home from '@/components/pages/Home'
 export default new VueRouter({
     routes:[
         {
+
+            path:'*',
+            redirect:'/login'
+        },
+        {
             name:'Login',
             path:'/login',
             component:Login
