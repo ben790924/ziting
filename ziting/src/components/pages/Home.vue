@@ -1,12 +1,19 @@
 <template>
     <div>
-        <div class="container">
-            
-            <div class="row" v-for="item in products" :key="item.id">
-                <div class="col-lg-3" :style="picture(item.image)"></div>
-                <div class="col-lg-3 mt-4">{{item.title}}</div>
-                <div class="col-lg-3 mt-4">{{item.origin_price}}</div>
-                <div class='col-lg-3'><button class="btn btn-danger">刪除</button></div>
+        <button class="btn btn-secondary createPD mt-1 mr-4">創建產品</button>
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col">
+                    <div class="row">
+                        <div class="col-md-3 text-center" v-for="item in products" :key="item.id">
+                            <div class="cover listMg" :style='picture(item.image)'></div>
+                            <div class="title listMg">產品名稱: {{item.title}}</div>
+                            <div class="price listMg">原價 ${{item.origin_price}}</div>
+                            <div class="forsale listMg">特價 ${{item.price}}</div>
+                            <span><button @click="deleteList" class="listMg btn btn-sm btn-danger deleteBtn">刪除</button></span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -43,3 +50,23 @@ export default {
     }
 }
 </script>
+<style>
+/* *{
+    border: 1px solid;
+} */
+html,body{
+    font-family: '微軟正黑體';
+    font-size: 14px;
+}
+.createPD{
+    float:right;
+}
+.cover{
+    width: 150px;
+    height: 100px;
+    margin: auto;
+}
+.listMg{
+    margin-top: 5px;
+}
+</style>
