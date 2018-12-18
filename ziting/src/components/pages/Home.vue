@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button class="btn btn-secondary createPD mt-1 mr-4">創建產品</button>
+
         <div class="container mt-5">
             <div class="row">
                 <div class="col">
@@ -10,7 +10,7 @@
                             <div class="title listMg">產品名稱: {{item.title}}</div>
                             <div class="price listMg">原價 ${{item.origin_price}}</div>
                             <div class="forsale listMg">特價 ${{item.price}}</div>
-                            <span><button @click="deleteList" class="listMg btn btn-sm btn-danger deleteBtn">刪除</button></span>
+
                         </div>
                     </div>
                 </div>
@@ -46,7 +46,7 @@ export default {
 
     created(){
         this.getProduct()
-        console.log(this.products)
+        // console.log(this.products)
     }
 }
 </script>

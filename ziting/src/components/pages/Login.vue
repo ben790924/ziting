@@ -98,6 +98,7 @@ export default {
 			let vm = this
 			let url = `${process.env.APIPATH}/admin/signin`
 			this.axios.post(url,vm.user).then((res)=>{
+				console.log('login',res.data)
 				if(res.data.success){
 					vm.$router.push('/')
 				}else{

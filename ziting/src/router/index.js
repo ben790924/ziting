@@ -5,7 +5,7 @@ Vue.use(VueRouter)
 
 import Login from '@/components/pages/Login'
 import Home from '@/components/pages/Home'
-
+import ProductList from '@/components/pages/ProductList'
 export default new VueRouter({
     routes:[
         {
@@ -22,6 +22,12 @@ export default new VueRouter({
             name:'Home',
             path:'/',
             component:Home
+        },
+        {
+            name:'Lists',
+            path:'/lists',
+            component:ProductList,
+            meta: { requiresAuth: true }
         },
     ]
 })
