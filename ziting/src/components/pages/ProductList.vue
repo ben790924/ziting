@@ -1,5 +1,8 @@
 <template>
     <div>
+        <div class="vld-parent">
+            <loading :active.sync="isLoading"></loading>
+        </div>
         <div class="container">
             <button class="btn btn-success" @click="logout">登出</button>
 
@@ -21,16 +24,16 @@
                 </a>
             </div>
             <!-- 表個內容 -->
-            <table class="table table-lg-responsive">
-                <thead>
+            <table class="table table-lg-responsive table-hover">
+                <thead class="thead-light">
                     <tr>
-                        <td width='150'>產品名稱</td>
-                        <td width='100'>分類</td>
-                        <td width='150'>原價</td>
-                        <td width='150'>售價</td>
-                        <td width='70'>數量</td>
-                        <td width='100'>操作</td>
-                        <td><button class="btn btn-secondary" @click.prevent="show_modal(true)">新增產品</button></td>
+                        <th width='150'>產品名稱</th>
+                        <th width='100'>分類</th>
+                        <th width='150'>原價</th>
+                        <th width='150'>售價</th>
+                        <th width='70'>數量</th>
+                        <th width='100'>操作</th>
+                        <th><button class="btn btn-secondary" @click.prevent="show_modal(true)">新增產品</button></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -93,9 +96,16 @@
                     </div>
                     <!-- seventh -->
                     <div class="form-group">
-                        <label for="formGroupExampleInput6">圖片</label>
-                        <input type="text" class="form-control" id="formGroupExampleInput6" placeholder="圖片網址" v-model="temp_product.image">
+                        <label for="formGroupExampleInput6">描述</label>
+                        <input type="text" class="form-control" id="formGroupExampleInput6" placeholder="描述" v-model="temp_product.description">
                     </div>
+                    <!-- eight -->
+                    <div class="form-group">
+                        <label for="formGroupExampleInput7">圖片</label>
+                        <input type="text" class="form-control" id="formGroupExampleInput7" placeholder="圖片網址" v-model="temp_product.image">
+                        <input type="file" name="file-to-upload" @change="upload_image" ref="files">
+                    </div>
+
                 </form>
             </div>
             <div class="modal-footer">
@@ -116,15 +126,18 @@ export default {
             products:[],
             temp_product:{},
             is_new:false,
-            products_length:1
+            products_length:1,
+            isLoading:false,
         }
     },
     methods:{
         getProduct(){
             let vm = this
-			let url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/products/all`
+            let url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/products/all`
+            vm.isLoading = true
             this.axios.get(url).then((res)=>{
                 vm.products = res.data.products
+                vm.isLoading = false
             })
         },
         show_modal(is_new,item){
@@ -141,18 +154,22 @@ export default {
             let vm = this
             let url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/product`
             let http_method ='post'
-            if(this.is_new){
+            vm.isLoading = true
+            if(!this.is_new){
                 http_method = 'put',
                 url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/product/${vm.temp_product.id}`
             }
             this.axios[http_method](url,{data:vm.temp_product}).then((res)=>{
                 // console.log(res)
+
                 if(res.data.success){
                     console.log('新增產品',res)
                     $('#exampleModal3').modal('hide')
                     vm.getProduct()
+                    vm.isLoading = false
                 }else{
                     vm.getProduct()
+                    vm.isLoading = false
                 }
 
             })
@@ -186,6 +203,20 @@ export default {
                 console.log('登出',res.data)
                 this.$router.push('/login')
             })
+        },
+        upload_image(){
+            // console.log(this)
+            let form_data = new FormData()
+            let uploaded_image = this.$refs.files.files[0]
+            form_data.append('file-to-upload',uploaded_image)
+            let url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/upload`
+            let vm = this
+            this.axios.post(url,form_data,{
+                headers:{'Content-Type':'multipart/form-data'}
+            }).then((res)=>{
+                console.log('image',res)
+                vm.$set(vm.temp_product,'image',res.data.imageUrl)
+            })
         }
     },
 
@@ -213,8 +244,11 @@ export default {
     height: 500px;
 } */
 .carousel{
-    width: 700px;
-    height: 600px;
+    width: 500px;
+    height: 400px;
     margin: auto;
+}
+.table{
+    text-align: center;
 }
 </style>

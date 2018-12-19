@@ -6,6 +6,7 @@ Vue.use(VueRouter)
 import Login from '@/components/pages/Login'
 import Home from '@/components/pages/Home'
 import ProductList from '@/components/pages/ProductList'
+import DetailPage from '../components/DetailPage'
 export default new VueRouter({
     routes:[
         {
@@ -21,7 +22,15 @@ export default new VueRouter({
         {
             name:'Home',
             path:'/',
-            component:Home
+            component:Home,
+            children:[
+                
+            ]
+        },
+        {
+            name:'DetailPage',
+            path:'/detailpage',
+            component:DetailPage,
         },
         {
             name:'Lists',
