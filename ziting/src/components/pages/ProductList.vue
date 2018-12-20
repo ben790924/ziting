@@ -227,6 +227,9 @@ export default {
 }
 </script>
 <style>
+html,body{
+    background-color: #f6f5f2;
+}
 .carousel-control-prev-icon{
     background-color:black;
     border-radius: 50%;

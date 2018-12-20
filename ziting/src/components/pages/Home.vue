@@ -1,14 +1,14 @@
 <template>
     <div>
-        <ul class="nav mt-5 ml-5">
+        <ul class="nav mt-4 nav_bg">
             <li class="nav-item">
-                <router-link class="nav-link active" to="/">首頁</router-link>
+                <router-link class="nav-link active nav_text" to="/">首頁</router-link>
             </li>
             <li class="nav-item">
-                <router-link class="nav-link" to="/lists">管理員介面</router-link>
+                <router-link class="nav-link nav_text" to="/lists">管理員介面</router-link>
             </li>
             <li class="nav-item">
-                <router-link class="nav-link" to="/login">登入</router-link>
+                <router-link class="nav-link nav_text" to="/login">登入</router-link>
             </li>
         </ul>
         <div class="container mt-5">
@@ -33,14 +33,16 @@
                 </div>
             </div>
         </div>
+        <Shopping-cart :cart_data='detail_datas'></Shopping-cart>
     </div>
 </template>
 
 <script>
 import DetailPage from '../DetailPage.vue'
+import ShoppingCart from '../ShoppingCart.vue'
 export default {
     components:{
-        DetailPage
+        DetailPage,ShoppingCart
     },
     data(){
         return{
@@ -96,17 +98,26 @@ export default {
 html,body{
     font-family: '微軟正黑體';
     font-size: 14px;
+    background-color: #f6f5f2;
 }
 .createPD{
     float:right;
 }
-.cover{
-    width: 150px;
-    height: 100px;
+.out_cover{
+    width: 250px;
+    height: 190px;
+    overflow: hidden;
     margin: auto;
-    border: 2px solid #000;
     border-radius: 10px;
-    padding: 4px;
+}
+.cover{
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    /* border: 1px solid #ccec4a; */
+    /* border-radius: 10px; */
+    /* padding: 4px; */
     transition: 0.5s;
 }
 .cover:hover{
@@ -116,5 +127,14 @@ html,body{
 }
 .listMg{
     margin-top: 5px;
+}
+.nav_bg{
+    background-color: #00aeef;
+    width: 100%;
+    height: 100px;
+
+}
+.nav_text{
+color: #feffff;
 }
 </style>
