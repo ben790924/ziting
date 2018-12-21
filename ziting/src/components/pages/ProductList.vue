@@ -178,7 +178,7 @@ export default {
                 let vm = this
                 let url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/product/${id}`
                 this.axios.delete(url).then((res)=>{
-                    // console.log('delete',res)
+                    console.log('delete_product',res)
                     vm.getProduct()
             })
         },

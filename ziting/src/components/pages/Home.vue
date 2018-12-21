@@ -27,13 +27,15 @@
                             <div class="price listMg">原價: ${{item.origin_price}}</div>
                             <div class="forsale listMg">特價: ${{item.price}}</div>
                             <button class="btn btn-success btn-sm" @click="detail_page(item.id)">查看詳情</button>
-                            <button class="btn btn-danger">加入購物車</button>
+                            <button class="btn btn-danger" @click="add_to_cart(item.id)">加入購物車</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <Shopping-cart :cart_data='detail_datas'></Shopping-cart>
+        <!-- 購物車component -->
+        <Shopping-cart :cart_data='products' :add_to_cart_data='cart_datas'></Shopping-cart>
+
     </div>
 </template>
 
@@ -49,10 +51,13 @@ export default {
             products:[],
             show_detail:true,
             detail_datas:{},
-
+            cart_datas:[]
         }
     },
     methods:{
+        cart_need_data(){
+            return this.products
+        },
         parent_method(){
             this.show_detail = !this.show_detail
         },
@@ -62,7 +67,7 @@ export default {
             this.axios.get(url).then((res)=>{
                 vm.products = res.data.products
                 // vm.detail_datas = res.data.products
-                console.log(res.data)
+                // console.log(res.data)
             })
         },
         picture(url){
@@ -82,12 +87,42 @@ export default {
                 // console.log('單一商品',res)
                 vm.detail_datas = res.data.product
             })
+        },
+        add_to_cart(id,qty=1){
+            let vm = this
+            let url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart`
+            let cart = {
+                product_id:id,
+                qty
+            }
+            this.axios.post(url,{data:cart}).then((res)=>{
+                // console.log('add_to_cart',res)
+                vm.get_carts()
+            })
+        },
+        get_carts(){
+            let vm = this
+            let url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart`
+            this.axios.get(url).then((res)=>{
+                // console.log('getcarts',res)
+                vm.cart_datas = res.data.data.carts
+                // console.log('vm.cart_datas',vm.cart_datas)
+            })
+        },
+        delete_carts(id){
+            let vm = this
+                let url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart/${id}`
+                this.axios.delete(url).then((res)=>{
+                    // console.log('delete',res)
+                    // console.log('cart_datas',vm.cart_datas)
+            })
         }
     },
 
     created(){
         this.getProduct()
         // console.log(this.products)
+        this.get_carts()
     }
 }
 </script>

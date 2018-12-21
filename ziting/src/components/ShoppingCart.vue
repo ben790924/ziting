@@ -5,53 +5,92 @@
             <div class="cart_title">購物車</div>
             <button class="edit_cart btn btn-white">修改</button>
         </div>
-        <div class="main">
+        <div class="main" v-for="cart in child_addtocart" :key='cart.id'>
             <div class="row mt-4 mb-4">
-                <img class="left_for_pic col-3" src='../assets/logo.png'>
+                <img class="left_for_pic col-3" :src='cart.product.image'>
                 <div class="main_info col-7">
-                    <div class="product_name mb-2">羊毛大衣</div>
+                    <div class="product_name mb-2">{{cart.product.title}}</div>
                     <div class="color_size mb-2">黑色-M</div>
-                    <div class="product_num">5個</div>
+                    <div class="product_num">{{cart.product.num}}{{cart.product.unit}}</div>
                 </div>
                 <div class="price_and_cancel col-2">
-                    <div class="product_price">$2,929</div>
-                    <div class="cancel_button"><i class="far fa-trash-alt"></i></div>
+                    <div class="product_price">${{cart.product.price}}</div>
+                    <button class="btn btn-danger" @click="delete_cart(cart.product.id)"><i class="far fa-trash-alt"></i></button>
                 </div>
             </div>
         </div>
         <div class="cart_footer mt-5">
             <div class="row">
-                <div class="col-6 text-right total_product">共1件商品</div>
+                <div class="col-6 text-right total_product">共{{child_addtocart.length}}件</div>
                 <div class="col-3 text-right">
                     <div class="align-self-start mb-3">商品金額</div>
                     <div class="align-self-center mb-3">運費</div>
                     <div class="align-self-end mb-3">小計</div>
                 </div>
                 <div class="col-3 text-right">
-                    <div class="align-self-start mb-3">$2,929</div>
-                    <div class="align-self-center mb-3">60</div>
-                    <div class="align-self-end mb-3">$2,989</div>
+                    <div class="align-self-start mb-3">${{cart_total_price}}</div>
+                    <div class="align-self-center mb-3">$60</div>
+                    <div class="align-self-end mb-3">${{cart_total_price+60}}</div>
                 </div>
             </div>
         </div>
     </div>
+
 </div>
 
 </template>
 
 <script>
 export default {
-    props:['cart_data'],
+    props:['cart_data','add_to_cart_data'],
+    data:function(){
+        return {
+            child_addtocart:this.add_to_cart_data
+        }
+    },
+
+computed:{
+    cart_total_price(){
+        let vm = this
+        let num = 0
+        this.add_to_cart_data.forEach(item=>{
+            num+=item.final_total
+        })
+        return num
+    }
+},
 
 methods:{
-    cart_picture(url){
+        cart_picture(url){
             return {
                 'background-image':'url('+url+')',
                 'background-size':'cover',
                 'background-position':'center center'
             }
         },
-}
+        /* res顯示success:true 但是並沒有刪除購物車list.. */
+        delete_cart(id){
+            let vm = this
+                let url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart/${id}`
+                this.axios.delete(url).then((res)=>{
+                    console.log('delete_cart',res)
+                    vm.get_carts()
+            })
+        },
+        get_carts(){
+            let vm = this
+            let url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart`
+            this.axios.get(url).then((res)=>{
+                console.log('getcarts',res)
+            })
+        },
+
+},
+created(){
+    this.get_carts()
+},
+
+
 }
 
 </script>
