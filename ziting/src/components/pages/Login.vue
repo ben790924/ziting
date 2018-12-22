@@ -38,7 +38,7 @@
 					<div class="text-center p-t-115">
 						<span class="txt1">
 							Don’t have an account?
-							<p>That's not My BUSINESS</p>
+							<p>That's not My BUSINESS !</p>
 						</span>
 					</div>
 				</form>
