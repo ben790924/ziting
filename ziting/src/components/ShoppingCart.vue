@@ -5,7 +5,7 @@
             <div class="cart_title">購物車</div>
             <button class="edit_cart btn btn-white">修改</button>
         </div>
-        <div class="main" v-for="cart in child_addtocart" :key='cart.id'>
+        <div class="main" v-for="cart in test" :key='cart.id'>
             <div class="row mt-4 mb-4">
                 <img class="left_for_pic col-3" :src='cart.product.image'>
                 <div class="main_info col-7">
@@ -21,7 +21,7 @@
         </div>
         <div class="cart_footer mt-5">
             <div class="row">
-                <div class="col-6 text-right total_product">共{{child_addtocart.length}}件</div>
+                <div class="col-6 text-right total_product">共{{test.length}}件</div>
                 <div class="col-3 text-right">
                     <div class="align-self-start mb-3">商品金額</div>
                     <div class="align-self-center mb-3">運費</div>
@@ -42,14 +42,17 @@
 
 <script>
 export default {
-    props:['cart_data','add_to_cart_data'],
+    props:['add_to_cart_data'],
     data:function(){
         return {
-            child_addtocart:this.add_to_cart_data
+            cart_lists:[]
         }
     },
 
 computed:{
+    test(){
+        return this.add_to_cart_data
+    },
     cart_total_price(){
         let vm = this
         let num = 0
@@ -74,20 +77,22 @@ methods:{
                 let url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart/${id}`
                 this.axios.delete(url).then((res)=>{
                     console.log('delete_cart',res)
-                    vm.get_carts()
+                    console.log('add_to_cart_data',vm.add_to_cart_data)
+                    vm.$emit('reload_data')
             })
         },
-        get_carts(){
-            let vm = this
-            let url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart`
-            this.axios.get(url).then((res)=>{
-                console.log('getcarts',res)
-            })
-        },
+        // get_carts(){
+        //     let vm = this
+        //     let url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart`
+        //     this.axios.get(url).then((res)=>{
+        //         console.log('getcarts',res)
+        //         vm.cart_lists = res.data.data.carts
+        //     })
+        // },
 
 },
 created(){
-    this.get_carts()
+    // this.get_carts()
 },
 
 

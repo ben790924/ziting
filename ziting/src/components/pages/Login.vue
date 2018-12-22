@@ -7,7 +7,7 @@
 			<div class="wrap-login100">
 				<form class="login100-form validate-form">
 					<span class="login100-form-title p-b-26">
-						Welcome
+						登入
 					</span>
 					<span class="login100-form-title p-b-48">
 						<i class="zmdi zmdi-font"></i>
@@ -38,11 +38,8 @@
 					<div class="text-center p-t-115">
 						<span class="txt1">
 							Don’t have an account?
+							<p>That's not My BUSINESS</p>
 						</span>
-
-						<a class="txt2" href="#">
-							Sign Up
-						</a>
 					</div>
 				</form>
 			</div>

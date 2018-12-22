@@ -34,7 +34,7 @@
             </div>
         </div>
         <!-- 購物車component -->
-        <Shopping-cart :cart_data='products' :add_to_cart_data='cart_datas'></Shopping-cart>
+        <Shopping-cart :cart_data='products' :add_to_cart_data='cart_datas' @reload_data='parent_reload_data' v-if="show_detail"></Shopping-cart>
 
     </div>
 </template>
@@ -55,6 +55,9 @@ export default {
         }
     },
     methods:{
+        parent_reload_data(){
+            this.get_carts()
+        },
         cart_need_data(){
             return this.products
         },
@@ -96,9 +99,10 @@ export default {
                 qty
             }
             this.axios.post(url,{data:cart}).then((res)=>{
-                // console.log('add_to_cart',res)
+                // console.log('add_to_cart,HOME',res)
                 vm.get_carts()
             })
+            console.log('HOME,vm.cart_datas',vm.cart_datas)
         },
         get_carts(){
             let vm = this
@@ -123,7 +127,10 @@ export default {
         this.getProduct()
         // console.log(this.products)
         this.get_carts()
-    }
+    },
+    mounted(){
+        this.get_carts()
+}
 }
 </script>
 <style scoped>
