@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="container posr">
         <ul class="nav mt-4 nav_bg">
             <li class="nav-item">
                 <router-link class="nav-link active nav_text" to="/">首頁</router-link>
@@ -16,7 +16,7 @@
             <Detail-page v-if="!show_detail" :detail_data='detail_datas' @bridge='parent_method'></Detail-page>
 
             <!-- 原有的購物頁面 -->
-            <div class="row" v-if="show_detail">
+            <div class="row" v-show="show_detail && !show_cart">
                 <div class="col">
                     <div class="row">
                         <div class="col-md-3 text-center" v-for="item in products" :key="item.id">
@@ -32,14 +32,22 @@
                     </div>
                 </div>
             </div>
+            <Shopping-cart :add_to_cart_data='cart_datas' @reload_data='parent_reload_data' @child_return_button='cart_button' v-if="show_cart"></Shopping-cart>
         </div>
         <!-- 購物車component -->
-        <Shopping-cart :cart_data='products' :add_to_cart_data='cart_datas' @reload_data='parent_reload_data' v-if="show_detail"></Shopping-cart>
+
+        <div class="footer container" v-if="show_detail && !show_cart">
+            <div class="shop_car"><button class="btn btn-lg" @click="cart_button">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart_num">{{cart_datas.length}}</span>
+                </button></div>
+        </div>
 
     </div>
 </template>
 
 <script>
+import $ from 'jquery'
 import DetailPage from '../DetailPage.vue'
 import ShoppingCart from '../ShoppingCart.vue'
 export default {
@@ -51,10 +59,14 @@ export default {
             products:[],
             show_detail:true,
             detail_datas:{},
-            cart_datas:[]
+            cart_datas:[],
+            show_cart:false,
         }
     },
     methods:{
+        cart_button(){
+            this.show_cart =! this.show_cart
+        },
         parent_reload_data(){
             this.get_carts()
         },
@@ -102,7 +114,7 @@ export default {
                 // console.log('add_to_cart,HOME',res)
                 vm.get_carts()
             })
-            console.log('HOME,vm.cart_datas',vm.cart_datas)
+            $('.out_cover')
         },
         get_carts(){
             let vm = this
@@ -117,10 +129,10 @@ export default {
             let vm = this
                 let url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart/${id}`
                 this.axios.delete(url).then((res)=>{
-                    // console.log('delete',res)
-                    // console.log('cart_datas',vm.cart_datas)
+                    vm.get_carts()
+
             })
-        }
+        },
     },
 
     created(){
@@ -128,20 +140,43 @@ export default {
         // console.log(this.products)
         this.get_carts()
     },
-    mounted(){
-        this.get_carts()
-}
+
 }
 </script>
 <style scoped>
-/* *{
-    border: 1px solid;
-} */
+
 html,body{
     font-family: '微軟正黑體';
     font-size: 14px;
     background-color: #f6f5f2;
+    position: relative;
+
 }
+.shop_car{
+    position: relative;
+    width: 60px;
+    height: 50px;
+    transition: 0.5s;
+    transform: scale(1.8)
+}
+.shop_car:hover{
+    transform: scale(2.4);
+    transition: 0.5s
+}
+.cart_num{
+    position: absolute;
+    right: 4px;
+    top: 1px;
+    border: 1px solid #a80000;
+    background-color:#a80000;
+    color: #feffff;
+    border-radius: 50%;
+    width: 16px;
+    height: 17px;
+    font-size: 8px;
+    line-height: 17px;
+}
+
 .createPD{
     float:right;
 }
@@ -178,5 +213,12 @@ html,body{
 }
 .nav_text{
 color: #feffff;
+}
+.footer{
+    position: fixed;
+    right: -820px;
+    top:280px;
+    display: flex;
+    padding: 5px;
 }
 </style>

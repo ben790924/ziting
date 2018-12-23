@@ -1,11 +1,11 @@
 <template>
 <div>
+    <button class="btn btn-primary btn-lg return_button" @click="return_button">返回</button>
     <div class="container cart_container">
         <div class="cart_header mt-5 mb-5">
             <div class="cart_title">購物車</div>
-            <button class="edit_cart btn btn-white">修改</button>
         </div>
-        <div class="main" v-for="cart in test" :key='cart.id'>
+        <div class="main" v-for="cart in add_to_cart_data" :key='cart.id'>
             <div class="row mt-4 mb-4">
                 <img class="left_for_pic col-3" :src='cart.product.image'>
                 <div class="main_info col-7">
@@ -15,13 +15,13 @@
                 </div>
                 <div class="price_and_cancel col-2">
                     <div class="product_price">${{cart.product.price}}</div>
-                    <button class="btn btn-danger" @click="delete_cart(cart.product.id)"><i class="far fa-trash-alt"></i></button>
+                    <button class="btn btn-danger" @click="delete_cart(cart.id)"><i class="far fa-trash-alt"></i></button>
                 </div>
             </div>
         </div>
         <div class="cart_footer mt-5">
             <div class="row">
-                <div class="col-6 text-right total_product">共{{test.length}}件</div>
+                <div class="col-6 text-right total_product">共{{add_to_cart_data.length}}件</div>
                 <div class="col-3 text-right">
                     <div class="align-self-start mb-3">商品金額</div>
                     <div class="align-self-center mb-3">運費</div>
@@ -45,7 +45,7 @@ export default {
     props:['add_to_cart_data'],
     data:function(){
         return {
-            cart_lists:[]
+
         }
     },
 
@@ -64,6 +64,9 @@ computed:{
 },
 
 methods:{
+        return_button(){
+            this.$emit('child_return_button')
+        },
         cart_picture(url){
             return {
                 'background-image':'url('+url+')',
@@ -71,31 +74,15 @@ methods:{
                 'background-position':'center center'
             }
         },
-        /* res顯示success:true 但是並沒有刪除購物車list.. */
-        delete_cart(id){
+        delete_cart(id){ /* 此id為特定此list的id,不是product的id  cart.id 即可 */
             let vm = this
                 let url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart/${id}`
                 this.axios.delete(url).then((res)=>{
-                    console.log('delete_cart',res)
-                    console.log('add_to_cart_data',vm.add_to_cart_data)
                     vm.$emit('reload_data')
             })
         },
-        // get_carts(){
-        //     let vm = this
-        //     let url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart`
-        //     this.axios.get(url).then((res)=>{
-        //         console.log('getcarts',res)
-        //         vm.cart_lists = res.data.data.carts
-        //     })
-        // },
 
 },
-created(){
-    // this.get_carts()
-},
-
-
 }
 
 </script>
@@ -109,13 +96,18 @@ html,body{
     padding: 10px;
     position: relative;
 }
+.return_button{
+    position: absolute;
+    left:280px;
+    top:170px;
+}
 .cart_container{
     width: 50%;
     margin-top: 20px;
     /* border: 1px solid #000; */
     position: absolute;
-    top: 600px;
-    left: 564px;
+    top: 103px;
+    left: 448px;
 }
 /* header */
 .cart_header{
