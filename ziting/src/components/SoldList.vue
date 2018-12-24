@@ -1,0 +1,20 @@
+<template>
+    <table>
+        <thead>
+            <th>
+                <td>購買日期</td>
+                <td>購買項目</td>
+                <td>購買數量</td>
+                <td>金額</td>
+            </th>
+        </thead>
+        <tbody>
+            <tr>
+                <td>2018/12/25</td>
+                <td>FNX</td>
+                <td>1</td>
+                <td>82000</td>
+            </tr>
+        </tbody>
+    </table>
+</template>

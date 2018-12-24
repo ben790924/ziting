@@ -20,7 +20,7 @@
             </div>
         </div>
         <div class="cart_footer mt-5">
-            <div class="row">
+            <div class="row" v-if="add_to_cart_data.length!==0">
                 <div class="col-6 text-right total_product">共{{add_to_cart_data.length}}件</div>
                 <div class="col-3 text-right">
                     <div class="align-self-start mb-3">商品金額</div>
@@ -33,6 +33,7 @@
                     <div class="align-self-end mb-3">${{cart_total_price+60}}</div>
                 </div>
             </div>
+            <div class="row empty_cart" v-if="add_to_cart_data.length==0"><h1>購物車是空的 QQ... </h1></div>
         </div>
     </div>
 
@@ -93,8 +94,17 @@ methods:{
 <style>
 html,body{
     font-family: '微軟正黑體';
-    padding: 10px;
+    margin: 0; 
+    padding: 0;
     position: relative;
+}
+.empty_cart{
+    color: #495057;
+    opacity: 0.3;
+}
+.empty_cart h1{
+
+    margin:auto;
 }
 .return_button{
     position: absolute;
@@ -178,6 +188,7 @@ html,body{
 .cart_footer{
     font-size: 20px;
     color: #495057;
+    
 }
 .total_product{
     color: rgba(54, 59, 55, 0.623)

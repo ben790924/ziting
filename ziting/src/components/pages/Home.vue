@@ -1,8 +1,8 @@
 <template>
-    <div class="container posr">
-        <ul class="nav mt-4 nav_bg">
+    <div class="container-fluid cprs">
+        <ul class="nav nav_bg">
             <li class="nav-item">
-                <router-link class="nav-link active nav_text" to="/">首頁</router-link>
+                <router-link class="nav-link nav_text" to="/">首頁</router-link>
             </li>
             <li class="nav-item">
                 <router-link class="nav-link nav_text" to="/lists">管理員介面</router-link>
@@ -10,7 +10,15 @@
             <li class="nav-item">
                 <router-link class="nav-link nav_text" to="/login">登入</router-link>
             </li>
+            <li class="footer" v-if="show_detail && !show_cart">
+                <button class="btn btn-lg cart_btn" @click="cart_button">
+                <i class="fas fa-shopping-cart"></i>
+                </button>
+                <div class="cart_num">{{cart_datas.length}}</div>
+            </li>
         </ul>
+
+
         <div class="container mt-5">
             <!-- DetailPage元件 -->
             <Detail-page v-if="!show_detail" :detail_data='detail_datas' @bridge='parent_method'></Detail-page>
@@ -27,20 +35,13 @@
                             <div class="price listMg">原價: ${{item.origin_price}}</div>
                             <div class="forsale listMg">特價: ${{item.price}}</div>
                             <button class="btn btn-success btn-sm" @click="detail_page(item.id)">查看詳情</button>
-                            <button class="btn btn-danger" @click="add_to_cart(item.id)">加入購物車</button>
+                            <button class="btn btn-danger" @click="add_to_cart(item.id,item.qty,$event,item.image)">加入購物車</button>
                         </div>
                     </div>
                 </div>
             </div>
             <Shopping-cart :add_to_cart_data='cart_datas' @reload_data='parent_reload_data' @child_return_button='cart_button' v-if="show_cart"></Shopping-cart>
-        </div>
-        <!-- 購物車component -->
-
-        <div class="footer container" v-if="show_detail && !show_cart">
-            <div class="shop_car"><button class="btn btn-lg" @click="cart_button">
-                <i class="fas fa-shopping-cart"></i>
-                <span class="cart_num">{{cart_datas.length}}</span>
-                </button></div>
+            <div class="fly_box" :style="picture(flypicture)" v-if="flypicture"></div>
         </div>
 
     </div>
@@ -61,6 +62,7 @@ export default {
             detail_datas:{},
             cart_datas:[],
             show_cart:false,
+            flypicture:null
         }
     },
     methods:{
@@ -103,18 +105,29 @@ export default {
                 vm.detail_datas = res.data.product
             })
         },
-        add_to_cart(id,qty=1){
+        add_to_cart(id,qty=1,evt,image){
+            this.flypicture = image
             let vm = this
+            let target = evt.target
+            console.log(evt)
             let url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart`
             let cart = {
                 product_id:id,
                 qty
             }
+            this.$nextTick(()=>{
+                TweenMax.from('.fly_box',1,{
+                left:$(target).offset().left,
+                top:$(target).offset().top,
+                opacity:1,
+                width: 10,
+                height: 15,
+            })
+            })
             this.axios.post(url,{data:cart}).then((res)=>{
                 // console.log('add_to_cart,HOME',res)
                 vm.get_carts()
             })
-            $('.out_cover')
         },
         get_carts(){
             let vm = this
@@ -150,6 +163,18 @@ html,body{
     font-size: 14px;
     background-color: #f6f5f2;
     position: relative;
+    padding: 0;
+    margin: 0;
+}
+.fly_box{
+    width: 60px;
+    height: 80px;
+    /* background-color: #004040; */
+    position: fixed;
+    right: 200px;
+    top: 16px;
+    opacity: 0;
+    /* z-index: 2; */
 
 }
 .shop_car{
@@ -164,17 +189,20 @@ html,body{
     transition: 0.5s
 }
 .cart_num{
-    position: absolute;
+    /* position: absolute;
     right: 4px;
-    top: 1px;
+    top: 1px; */
     border: 1px solid #a80000;
     background-color:#a80000;
     color: #feffff;
     border-radius: 50%;
-    width: 16px;
-    height: 17px;
+    width: 20px;
+    height: 20px;
     font-size: 8px;
-    line-height: 17px;
+    line-height: 20px;
+    text-align: center;
+    display: inline-block;
+    font-weight: 700;
 }
 
 .createPD{
@@ -215,10 +243,21 @@ html,body{
 color: #feffff;
 }
 .footer{
-    position: fixed;
-    right: -820px;
-    top:280px;
-    display: flex;
-    padding: 5px;
+    position: absolute;
+    right: 150px;
+    top: 25px;
+    width: 80px;
+    height: 80px;
+    z-index: 1000;
 }
+.cprs{
+    position: relative;
+}
+.cart_btn{
+    margin: 0;
+    padding: 0;
+    background-color: #00aeef;
+    
+}
+
 </style>

@@ -5,7 +5,6 @@
         </div>
         <div class="container">
             <button class="btn btn-success" @click="logout">登出</button>
-
             <hr>
             <!-- 輪播圖 -->
             <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
@@ -109,12 +108,12 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" @click.prevent='update_product'>確認</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" @click='update_product'>確認</button>
             </div>
             </div>
         </div>
     </div>
-
+    
     </div>
 </template>
 

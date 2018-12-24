@@ -7,6 +7,7 @@ import Login from '@/components/pages/Login'
 import Home from '@/components/pages/Home'
 import ProductList from '@/components/pages/ProductList'
 import DetailPage from '../components/DetailPage'
+import SoldList from '../components/SoldList'
 export default new VueRouter({
     routes:[
         {
@@ -24,7 +25,7 @@ export default new VueRouter({
             path:'/',
             component:Home,
             children:[
-                
+
             ]
         },
         {
@@ -36,7 +37,13 @@ export default new VueRouter({
             name:'Lists',
             path:'/lists',
             component:ProductList,
-            meta: { requiresAuth: true }
+            meta: { requiresAuth: true },
+            children:[
+            {   name:'SoldList',
+                path:'/soldlist',
+                component:SoldList
+            }
+            ]
         },
     ]
 })
