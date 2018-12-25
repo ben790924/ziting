@@ -5,7 +5,10 @@
         </div>
         <div class="container">
             <button class="btn btn-success" @click="logout">登出</button>
+            <router-link to='/soldlist'>訂單列表</router-link>
+            <router-link to='lists/Coupon'>優惠券</router-link>
             <hr>
+
             <!-- 輪播圖 -->
             <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner" v-for="(pic,num) in products" :key="pic.id">
@@ -135,6 +138,7 @@ export default {
             let url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/products/all`
             vm.isLoading = true
             this.axios.get(url).then((res)=>{
+                // console.log('getProduct',res)
                 vm.products = res.data.products
                 vm.isLoading = false
             })

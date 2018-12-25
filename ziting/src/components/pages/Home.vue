@@ -35,7 +35,7 @@
                             <div class="price listMg">原價: ${{item.origin_price}}</div>
                             <div class="forsale listMg">特價: ${{item.price}}</div>
                             <button class="btn btn-success btn-sm" @click="detail_page(item.id)">查看詳情</button>
-                            <button class="btn btn-danger" @click="add_to_cart(item.id,item.qty,$event,item.image)">加入購物車</button>
+                            <button class="btn btn-danger" @click="add_to_cart(item.id,item.qty,$event,item.image),bus_emit_data()">加入購物車</button>
                         </div>
                     </div>
                 </div>
@@ -66,6 +66,10 @@ export default {
         }
     },
     methods:{
+        bus_emit_data(){
+            console.log('cart_datas',this.cart_datas)
+            this.$bus.$emit('bridge',{arraydata:this.cart_datas})
+        },
         cart_button(){
             this.show_cart =! this.show_cart
         },

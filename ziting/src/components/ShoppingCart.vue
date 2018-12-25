@@ -51,9 +51,7 @@ export default {
     },
 
 computed:{
-    test(){
-        return this.add_to_cart_data
-    },
+
     cart_total_price(){
         let vm = this
         let num = 0
@@ -65,6 +63,7 @@ computed:{
 },
 
 methods:{
+
         return_button(){
             this.$emit('child_return_button')
         },
@@ -84,6 +83,9 @@ methods:{
         },
 
 },
+mounted(){
+    
+}
 }
 
 </script>

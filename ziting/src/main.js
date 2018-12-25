@@ -9,18 +9,24 @@ import {TweenMax, Power2, TimelineLite} from "gsap/TweenMax"
 import 'bootstrap'
 import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/vue-loading.css'
-
+import eventBus from './setup/eventBus'
 Vue.use(VueAxios, axios)
 Vue.component('Loading',Loading)
 Vue.config.productionTip = false
 
 axios.defaults.withCredentials = true
 /* eslint-disable no-new */
+
 new Vue({
   el: '#app',
   components: { App },
   template: '<App/>',
-  router
+  router,
+  data(){
+    return{
+      bus:eventBus
+    }
+  }
 })
 
 router.beforeResolve((to, from, next) => {

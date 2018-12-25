@@ -8,6 +8,7 @@ import Home from '@/components/pages/Home'
 import ProductList from '@/components/pages/ProductList'
 import DetailPage from '../components/DetailPage'
 import SoldList from '../components/SoldList'
+import Coupon from '../components/Coupon'
 export default new VueRouter({
     routes:[
         {
@@ -38,12 +39,19 @@ export default new VueRouter({
             path:'/lists',
             component:ProductList,
             meta: { requiresAuth: true },
-            children:[
-            {   name:'SoldList',
-                path:'/soldlist',
-                component:SoldList
-            }
-            ]
+
+        },
+        {
+            name:'SoldList',
+            path:'/soldlist',
+            component:SoldList
+
+        },
+        {
+            name:'Coupon',
+            path:'/lists/coupon',
+            component:Coupon
+
         },
     ]
 })
