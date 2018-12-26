@@ -5,7 +5,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <h5 class="modal-title" id="exampleModalLabel">新增優惠券</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -37,12 +37,35 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary" @click="confirm_coupon">確定</button>
+                <button type="button" class="btn btn-primary" @click="update_coupon(coupon_list.id)">確定</button>
             </div>
             </div>
         </div>
     </div>
-        <button class="btn" @click="add_coupon">新增優惠券</button>
+        <!-- 優惠券列表 -->
+        <table class="table container mt-5">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>是否起用</th>
+                    <th>折扣百分比</th>
+                    <th>到期日</th>
+                    <th>折扣碼</th>
+                    <th><button class="btn" @click='show_modal(true)'>新增優惠券</button></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="list in coupon_list" :key="list.id">
+                    <td>{{list.title}}</td>
+                    <td>{{list.is_enabled}}</td>
+                    <td>{{list.percent}}</td>
+                    <td>{{list.due_date}}</td>
+                    <td>{{list.code}}</td>
+                    <td><button class="btn btn-danger" @click="delete_coupon(list.id)">刪除</button><button class="btn" @click="show_modal(list,false)">修改</button></td>
+                </tr>
+            </tbody>
+        </table>
+
     </div>
 </template>
 
@@ -51,39 +74,62 @@ import $ from 'jquery'
 export default {
     data(){
         return{
-            coupon:{
-                "title": "超級特惠價格",
-                "is_enabled": 1,
-                "percent": 80,
-                "due_date": 6547658,
-                "code": "testCode"
-            },
-            coupon_list:[]
+            coupon:{},
+            coupon_list:{},
+            is_new:false
         }
     },
     methods:{
-        add_coupon(){
+        show_modal(item,is_new){
+            if(this.is_new){
+                this.coupon = {}
+                this.is_new=true
+            }else if(!this.is_new){
+                this.coupon = {...item}
+                this.is_new=false
+            }
+            $('#exampleModal').modal('show')
+        },
+        update_coupon(id){
             let vm = this
             let url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/coupon`
-            this.axios.post(url,{data:vm.coupon}).then((res)=>{
-                console.log('coupon',res)
-                
-                $('#exampleModal').modal('show')
+            let httpmethod = 'post'
+            if(!this.is_new){
+                httpmethod='put'
+                url=`${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/coupon/${id}`
+            }
+            this.axios[httpmethod](url,{'data':vm.coupon}).then((res)=>{
+                if(res.data.success){
+                    $('#exampleModal').modal('hide')
+                    vm.get_coupon()
+                }else{
+                    alert('更新失敗')
+                }
             })
         },
-        confirm_coupon(page=1){
+        get_coupon(){
             let vm = this
-            let url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/coupons?page=${page}`
-            this.axios.get(url,{coupons:[vm.coupon]}).then((res)=>{
+            let url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/coupons`
+            this.axios.get(url,vm.coupon).then((res)=>{
                 console.log('getCoupon',res)
                 if(res.data.success){
                     vm.coupon_list = res.data.coupons
                     console.log('coupon_list',vm.coupon_list)
-                    $('#exampleModal').modal('hide')
+
                 }
-                
+
+            })
+        },
+        delete_coupon(id){
+            let vm = this
+            let url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/coupon/${id}`
+            this.axios.delete(url).then((res)=>{
+            vm.get_coupon()
             })
         }
+    },
+    created(){
+        this.get_coupon()
     }
 }
 </script>

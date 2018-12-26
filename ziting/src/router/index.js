@@ -38,7 +38,7 @@ export default new VueRouter({
             name:'Lists',
             path:'/lists',
             component:ProductList,
-            meta: { requiresAuth: true },
+            // meta: { requiresAuth: true }, 暫時關掉
 
         },
         {
