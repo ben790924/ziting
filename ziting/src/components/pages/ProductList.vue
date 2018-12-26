@@ -35,7 +35,7 @@
                         <th width='150'>售價</th>
                         <th width='70'>數量</th>
                         <th width='100'>操作</th>
-                        <th><button class="btn btn-secondary" @click.prevent="show_modal(true)">新增產品</button></th>
+                        <th><button class="btn btn-secondary" @click.prevent="show_modal(true,temp_product)">新增產品</button></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -144,7 +144,7 @@ export default {
             })
         },
         show_modal(is_new,item){
-            if(this.is_new){
+            if(is_new){
                 this.temp_product = {}
                 this.is_new = true
             }else{

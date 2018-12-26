@@ -37,21 +37,21 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary" @click="update_coupon(coupon_list.id)">確定</button>
+                <button type="button" class="btn btn-primary" @click="update_coupon()">確定</button>
             </div>
             </div>
         </div>
     </div>
         <!-- 優惠券列表 -->
-        <table class="table container mt-5">
-            <thead>
+        <table class="table container mt-5 table-hover">
+            <thead class="thead-light">
                 <tr>
                     <th>Title</th>
                     <th>是否起用</th>
                     <th>折扣百分比</th>
                     <th>到期日</th>
                     <th>折扣碼</th>
-                    <th><button class="btn" @click='show_modal(true)'>新增優惠券</button></th>
+                    <th><button class="btn btn-info" @click='show_modal(coupon,true)'>新增優惠券</button></th>
                 </tr>
             </thead>
             <tbody>
@@ -61,7 +61,7 @@
                     <td>{{list.percent}}</td>
                     <td>{{list.due_date}}</td>
                     <td>{{list.code}}</td>
-                    <td><button class="btn btn-danger" @click="delete_coupon(list.id)">刪除</button><button class="btn" @click="show_modal(list,false)">修改</button></td>
+                    <td><button class="btn btn-warning mr-2" @click="show_modal(list,false)">修改</button><button class="btn btn-danger" @click="delete_coupon(list.id)">刪除</button></td>
                 </tr>
             </tbody>
         </table>
@@ -81,22 +81,22 @@ export default {
     },
     methods:{
         show_modal(item,is_new){
-            if(this.is_new){
+            if(is_new){
                 this.coupon = {}
                 this.is_new=true
-            }else if(!this.is_new){
+            }else if(!is_new){
                 this.coupon = {...item}
                 this.is_new=false
             }
             $('#exampleModal').modal('show')
         },
-        update_coupon(id){
+        update_coupon(){
             let vm = this
             let url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/coupon`
             let httpmethod = 'post'
             if(!this.is_new){
                 httpmethod='put'
-                url=`${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/coupon/${id}`
+                url=`${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/coupon/${vm.coupon.id}`
             }
             this.axios[httpmethod](url,{'data':vm.coupon}).then((res)=>{
                 if(res.data.success){
