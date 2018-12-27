@@ -1,5 +1,7 @@
 <template>
     <div>
+        <router-link to='/'>home</router-link>
+        <!-- <button class="btn" @click="on_from_cart">ON</button> -->
         <table class="table">
             <thead>
                 <tr>
@@ -27,25 +29,21 @@
 export default {
     data(){
         return{
-            home_data:[]
+            home_data:[],
+            
         }
     },
     methods:{
-        // get_orders(page=1){
-        //     let url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/orders?page=${page}`
-        //     this.axios.get(url).then((res)=>{
-        //         console.log(res)
+        // on_from_cart(){
+        //     let vm = this
+        //     this.$bus.$on('cart-to-soldlist',function(evt){
+        //         vm.message = evt
         //     })
         // }
     },
     created(){
-        
-        let vm = this
-        this.$bus.$on('bridge',evt=>{
-            console.log('dataddd',evt.arraydata)
-            vm.home_data=evt.arraydata  /* 無法指派到home_data. why? */
-        })
-        console.log('home_data',this.home_data)
+
     }
+
 }
 </script>

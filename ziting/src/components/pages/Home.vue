@@ -8,6 +8,9 @@
                 <router-link class="nav-link nav_text" to="/lists">管理員介面</router-link>
             </li>
             <li class="nav-item">
+                <router-link class="nav-link nav_text" to="/soldlist">SOLDLIST</router-link>
+            </li>
+            <li class="nav-item">
                 <router-link class="nav-link nav_text" to="/login">登入</router-link>
             </li>
             <li class="footer" v-if="show_detail && !show_cart">
@@ -40,6 +43,7 @@
                     </div>
                 </div>
             </div>
+            <!-- shoppingCart -->
             <Shopping-cart :add_to_cart_data='cart_datas' @reload_data='parent_reload_data' @child_return_button='cart_button' v-if="show_cart"></Shopping-cart>
             <div class="fly_box" :style="picture(flypicture)" v-if="flypicture"></div>
         </div>
@@ -163,12 +167,18 @@ export default {
 <style scoped>
 
 html,body{
-    font-family: '微軟正黑體';
+    font-family: 'Noto Sans TC';
     font-size: 14px;
-    background-color: #f6f5f2;
     position: relative;
     padding: 0;
     margin: 0;
+
+}
+.cprs{
+    background-color: #F8F9FA;
+    height: 100%;
+    position: relative;
+    padding: 0;
 }
 .fly_box{
     width: 60px;
@@ -238,10 +248,10 @@ html,body{
     margin-top: 5px;
 }
 .nav_bg{
-    background-color: #00aeef;
+    background-color: #1b1b1b;
     width: 100%;
-    height: 100px;
-
+    height: 50px;
+    text-align: center
 }
 .nav_text{
 color: #feffff;
@@ -249,19 +259,17 @@ color: #feffff;
 .footer{
     position: absolute;
     right: 150px;
-    top: 25px;
+    top: 10px;
     width: 80px;
     height: 80px;
     z-index: 1000;
 }
-.cprs{
-    position: relative;
-}
+
 .cart_btn{
     margin: 0;
     padding: 0;
     background-color: #00aeef;
-    
+
 }
 
 </style>

@@ -1,7 +1,9 @@
 <template>
 <div>
     <button class="btn btn-primary btn-lg return_button" @click="return_button">返回</button>
-    <div class="container cart_container">
+    <Input-coupon v-if="show_inputCoupon" :toggle_input='show_inputCoupon' @inputcoupon_bridge='return_back'></Input-coupon>
+    <div class="container cart_container" v-if="!show_inputCoupon">
+
         <div class="cart_header mt-5 mb-5">
             <div class="cart_title">購物車</div>
         </div>
@@ -34,6 +36,7 @@
                 </div>
             </div>
             <div class="row empty_cart" v-if="add_to_cart_data.length==0"><h1>購物車是空的 QQ... </h1></div>
+            <button class="btn" @click="toggle_input_page">有優惠碼嗎?</button>
         </div>
     </div>
 
@@ -42,11 +45,15 @@
 </template>
 
 <script>
+import InputCoupon from './InputCoupon'
 export default {
+    components:{
+        InputCoupon
+    },
     props:['add_to_cart_data'],
     data:function(){
         return {
-
+            show_inputCoupon:false,
         }
     },
 
@@ -63,7 +70,12 @@ computed:{
 },
 
 methods:{
-
+        return_back(){
+            this.show_inputCoupon=!this.show_inputCoupon
+        },
+        toggle_input_page(){
+            this.show_inputCoupon=!this.show_inputCoupon
+        },
         return_button(){
             this.$emit('child_return_button')
         },
@@ -83,8 +95,8 @@ methods:{
         },
 
 },
-mounted(){
-    
+created(){
+
 }
 }
 
@@ -95,13 +107,12 @@ mounted(){
 
 <style>
 html,body{
-    font-family: '微軟正黑體';
-    margin: 0; 
+    margin: 0;
     padding: 0;
     position: relative;
 }
 .empty_cart{
-    color: #495057;
+    color: #202020;
     opacity: 0.3;
 }
 .empty_cart h1{
@@ -128,7 +139,7 @@ html,body{
     height: 60px;
     /* background-color: #00AEEF;
      */
-    border-bottom: 2px solid #495057;
+    border-bottom: 2px solid #202020;
     text-align: center;
     /* vertical-align: center; */
     /* border-radius: 10px; */
@@ -139,7 +150,7 @@ html,body{
     vertical-align: center;
     font-size: 30px;
     font-weight: 600;
-    color: #495057;
+    color: #202020;
     padding: 0;
     display: inline-block;
     line-height: 60px;
@@ -147,7 +158,7 @@ html,body{
 .edit_cart{
     float: right;
     font-size: 15px;
-    color: #495057;
+    color: #202020;
     font-weight: 550;
     cursor: pointer;
     margin-top: 13px;
@@ -157,11 +168,11 @@ html,body{
 /* main */
 .main{
     position: relative;
-    border-bottom: 2px solid #495057;
+    border-bottom: 2px solid #202020;
 }
 .product_name{
     font-size: 28px;
-    color: #495057;
+    color: #202020;
     font-weight: 550;
 }
 .left_for_pic{
@@ -170,10 +181,10 @@ html,body{
     background-position: center center;
 }
 .color_size{
-    color: rgba(54, 59, 55, 0.623)
+    color: #f8911b9f
 }
 .product_num{
-    color: rgba(54, 59, 55, 0.623)
+    color: #f8911b9f
 }
 .cancel_button{
     font-size: 40px;
@@ -189,10 +200,10 @@ html,body{
 
 .cart_footer{
     font-size: 20px;
-    color: #495057;
+    color: #ec3535;
     
 }
 .total_product{
-    color: rgba(54, 59, 55, 0.623)
+    color: #f1f1ff
 }
 </style>

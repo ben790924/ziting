@@ -35,7 +35,7 @@ export default {
 
 <style scoped>
 *{
-    font-family: '微軟正黑體';
+    font-family: 'Noto Sans TC', sans-serif;
     font-size: 20px;
 }
 .cover{

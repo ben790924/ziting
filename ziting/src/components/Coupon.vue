@@ -1,5 +1,24 @@
 <template>
     <div>
+        <!-- navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-light mt-2">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <router-link to='/' class="nav-link">首頁</router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link to='/soldlist' class="nav-link">訂單列表</router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link to='lists' class="nav-link">管理員介面</router-link>
+                        </li>
+                        <li class="nav-item">
+                        </li>
+                    </ul>
+                    
+                </div>
+            </nav>
         <!-- modal -->
     <div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -55,7 +74,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="list in coupon_list" :key="list.id">
+                <tr v-for="(list,i) in coupon_list" :key='`${i}-${list.id}`'>
                     <td>{{list.title}}</td>
                     <td>{{list.is_enabled}}</td>
                     <td>{{list.percent}}</td>

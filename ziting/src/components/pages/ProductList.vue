@@ -4,10 +4,25 @@
             <loading :active.sync="isLoading"></loading>
         </div>
         <div class="container">
-            <button class="btn btn-success" @click="logout">登出</button>
-            <router-link to='/soldlist'>訂單列表</router-link>
-            <router-link to='lists/Coupon'>優惠券</router-link>
-            <hr>
+            <!-- navbar -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-light mt-2">
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <router-link to='/' class="nav-link">首頁</router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link to='/soldlist' class="nav-link">訂單列表</router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link to='lists/Coupon' class="nav-link">優惠券</router-link>
+                        </li>
+                        <li class="nav-item">
+                        </li>
+                    </ul>
+                    <button class="btn btn-sm btn-success" style="float:right" @click="logout">登出</button>
+                </div>
+            </nav>
 
             <!-- 輪播圖 -->
             <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
@@ -39,7 +54,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="item in products" :key="item.id">
+                    <tr v-for="item in products" :key="item.id" class="table-light">
                         <td>{{item.title}}</td>
                         <td>{{item.category}}</td>
                         <td class="text-right">${{item.origin_price}}</td>
@@ -231,7 +246,15 @@ export default {
 </script>
 <style>
 html,body{
-    background-color: #f6f5f2;
+/*
+    background-image: url('../../assets/bgimage.jpg');
+    background-position: center center;
+    background-size: 100%; */
+    /* background-repeat: no-repeat */
+    background-color: #F8F9FA;
+}
+body{
+    font-family: 'Noto Sans TC'
 }
 .carousel-control-prev-icon{
     background-color:black;
@@ -249,10 +272,16 @@ html,body{
     width: 550px;
     height: 500px;
 } */
-.carousel{
+.carousel-item{
     width: 500px;
     height: 400px;
     margin: auto;
+}
+.carousel-item img{
+    width: 440px;
+    height: 300px;
+    margin: auto;
+    margin-top: 50px
 }
 .table{
     text-align: center;
