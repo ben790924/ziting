@@ -12,7 +12,12 @@
                     <button class="btn btn-success" type="button" @click="input_coupon">確認</button>
                 </div>
             </div>
-
+        </div>
+        <div class="ok_icon mt-5">
+            <i class="fas fa-check-circle" v-show="is_show"></i>
+            <span class="ml-2" v-show="is_show">已套用優惠券</span>
+            <i class="fas fa-times-circle" v-show="has_coupon && !is_show"></i>
+            <span class="ml-2" v-show="has_coupon && !is_show">找不到優惠券</span>
         </div>
     </div>
 
@@ -21,23 +26,32 @@
 </template>
 
 <script>
+import $ from 'jquery'
 export default {
 
 data(){
     return{
         coupon_codes:'',
+        is_show:false,
+        has_coupon:false
     }
 },
 
 methods:{
     input_coupon(){
         let vm = this
+
         let url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/coupon`
         let coupon = {
             code:vm.coupon_codes
         }
         this.axios.post(url,{data:coupon}).then((res)=>{
-            console.log(res)
+            console.log('inputCoupon',res)
+            if(res.data.success){
+                this.is_show=true
+            }else{
+                vm.has_coupon = true
+            }
             })
         },
     return_carts(){
@@ -47,13 +61,23 @@ methods:{
 
 }
 
-
-
 </script>
 
 
 
 
 <style>
-
+.ok_icon{
+    display: flex;
+    justify-content: center;
+    transition: 1s;
+    align-items: center;
+    font-weight: bold;
+}
+.fa-check-circle{
+    font-size: 40px;
+}
+.fa-times-circle{
+    font-size: 40px;
+}
 </style>

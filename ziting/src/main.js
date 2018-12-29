@@ -10,10 +10,11 @@ import 'bootstrap'
 import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/vue-loading.css'
 import eventBus from './setup/eventBus'
+import currencyFilter from '../src/filter/currency'
 Vue.use(VueAxios, axios)
 Vue.component('Loading',Loading)
 Vue.config.productionTip = false
-
+Vue.filter('currency',currencyFilter)
 axios.defaults.withCredentials = true
 /* eslint-disable no-new */
 

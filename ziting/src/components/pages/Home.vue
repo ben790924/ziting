@@ -1,4 +1,6 @@
 <template>
+<div>
+    <loading :active.sync="isLoading"></loading>
     <div class="container-fluid cprs">
         <ul class="nav nav_bg">
             <li class="nav-item">
@@ -21,12 +23,20 @@
             </li>
         </ul>
 
+        <!-- jumbotron -->
+        <div class="jumbotron jumbotron-fluid mt-5"  v-show="show_detail && !show_cart">
+                <div class="container">
+                    <h1 class="display-3">世界頂級蛋糕狂銷中 ...</h1>
+                    <p class="lead">This is a modified jumbotron that occupies
+                                    the entire horizontal space of its parent.</p>
+                </div>
+        </div>
 
-        <div class="container mt-5">
+
+        <div class="container-fluid mt-5">
             <!-- DetailPage元件 -->
             <Detail-page v-if="!show_detail" :detail_data='detail_datas' @bridge='parent_method'></Detail-page>
-
-            <!-- 原有的購物頁面 -->
+            <!--  原有的購物頁面 -->
             <div class="row" v-show="show_detail && !show_cart">
                 <div class="col">
                     <div class="row">
@@ -35,10 +45,10 @@
                                 <div class="cover listMg" :style='picture(item.image)'></div>
                             </div>
                             <div class="title listMg">產品名稱: {{item.title}}</div>
-                            <div class="price listMg">原價: ${{item.origin_price}}</div>
-                            <div class="forsale listMg">特價: ${{item.price}}</div>
+                            <div class="price listMg">原價: {{item.origin_price | currency}}</div>
+                            <div class="forsale listMg">特價: {{item.price | currency}}</div>
                             <button class="btn btn-success btn-sm" @click="detail_page(item.id)">查看詳情</button>
-                            <button class="btn btn-danger" @click="add_to_cart(item.id,item.qty,$event,item.image),bus_emit_data()">加入購物車</button>
+                            <button class="btn btn-danger btn-sm" @click="add_to_cart(item.id,item.qty,$event,item.image)">加入購物車</button>
                         </div>
                     </div>
                 </div>
@@ -47,7 +57,13 @@
             <Shopping-cart :add_to_cart_data='cart_datas' @reload_data='parent_reload_data' @child_return_button='cart_button' v-if="show_cart"></Shopping-cart>
             <div class="fly_box" :style="picture(flypicture)" v-if="flypicture"></div>
         </div>
-
+    </div>
+    <div class="home_footer container-fluid">
+        <span>© Copright 2018 Ziting蛋糕專賣店</span>
+        <a href="#"><i class="fab fa-facebook-square"></i>FACEBOOK</a>
+        <a href="#"><i class="fab fa-instagram"></i>INSTAGRAM</a>
+        <a href="#"><i class="fab fa-twitter-square"></i>TWITTER</a>
+    </div>
     </div>
 </template>
 
@@ -66,16 +82,18 @@ export default {
             detail_datas:{},
             cart_datas:[],
             show_cart:false,
-            flypicture:null
+            flypicture:null,
+            isLoading:false
         }
     },
     methods:{
-        bus_emit_data(){
-            console.log('cart_datas',this.cart_datas)
-            this.$bus.$emit('bridge',{arraydata:this.cart_datas})
-        },
+        // bus_emit_data(){
+        //     console.log('cart_datas',this.cart_datas)
+        //     this.$bus.$emit('bridge',{arraydata:this.cart_datas})
+        // },
         cart_button(){
             this.show_cart =! this.show_cart
+            this.get_carts()
         },
         parent_reload_data(){
             this.get_carts()
@@ -85,6 +103,7 @@ export default {
         },
         parent_method(){
             this.show_detail = !this.show_detail
+            this.get_carts()
         },
         getProduct(id){
             let vm = this
@@ -104,6 +123,7 @@ export default {
         },
         detail_page(id){
             this.show_detail=false
+            this.isLoading=true
             // console.log('homepage show_detail',this.show_detail)
             // console.log(id) 一串英文字
             let vm = this
@@ -111,6 +131,7 @@ export default {
             this.axios.get(url).then((res)=>{
                 // console.log('單一商品',res)
                 vm.detail_datas = res.data.product
+                vm.isLoading=false
             })
         },
         add_to_cart(id,qty=1,evt,image){
@@ -143,15 +164,16 @@ export default {
             this.axios.get(url).then((res)=>{
                 // console.log('getcarts',res)
                 vm.cart_datas = res.data.data.carts
-                // console.log('vm.cart_datas',vm.cart_datas)
+                console.log('vm.cart_datas',vm.cart_datas)
             })
         },
         delete_carts(id){
-            let vm = this
+                let vm = this
+                this.isLoading=true
                 let url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart/${id}`
                 this.axios.delete(url).then((res)=>{
                     vm.get_carts()
-
+                    vm.isLoading=false
             })
         },
     },
@@ -172,13 +194,45 @@ html,body{
     position: relative;
     padding: 0;
     margin: 0;
-
+}
+.home_footer{
+    width: 100%;
+    height: 170px;
+    position: absolute;
+    bottom: 0;
+    background-color: #E9ECEF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.5s;
+}
+.home_footer span{
+    font-size: 20px;
+    font-family:'Noto Sans TC';
+    transition: 0.5s;
+}
+.home_footer a{
+    margin-left: 10px;
+    color:black;
+    transition: 0.5s;
+}
+.home_footer a:hover{
+    transform: scale(1.1);
+    transition: 0.5s;
+}
+.home_footer i{
+    margin-right: 5px;
+}
+.home_footer a::after{
+    content: '|';
+    margin-left: 10px;
 }
 .cprs{
     background-color: #F8F9FA;
     height: 100%;
     position: relative;
     padding: 0;
+    
 }
 .fly_box{
     width: 60px;
@@ -251,7 +305,12 @@ html,body{
     background-color: #1b1b1b;
     width: 100%;
     height: 50px;
-    text-align: center
+    text-align: center;
+    position: fixed;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center
 }
 .nav_text{
 color: #feffff;

@@ -57,8 +57,8 @@
                     <tr v-for="item in products" :key="item.id" class="table-light">
                         <td>{{item.title}}</td>
                         <td>{{item.category}}</td>
-                        <td class="text-right">${{item.origin_price}}</td>
-                        <td class="text-right">${{item.price}}</td>
+                        <td class="text-right">{{item.origin_price | currency}}</td>
+                        <td class="text-right">{{item.price | currency}}</td>
                         <td>{{item.num}}/{{item.unit}}</td>
                         <td><button class="btn btn-sm btn-outline-primary" @click.prevent="show_modal(false,item)">編輯</button></td>
                         <td><button class="btn btn-danger btn-sm" @click="delete_product(item.id)">刪除產品</button></td>

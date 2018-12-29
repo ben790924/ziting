@@ -1,9 +1,9 @@
 <template>
 <div>
+    <loading :active.sync="isLoading"></loading>
     <button class="btn btn-primary btn-lg return_button" @click="return_button">返回</button>
     <Input-coupon v-if="show_inputCoupon" :toggle_input='show_inputCoupon' @inputcoupon_bridge='return_back'></Input-coupon>
-    <div class="container cart_container" v-if="!show_inputCoupon">
-
+    <div class="container-fluid cart_container" v-if="!show_inputCoupon">
         <div class="cart_header mt-5 mb-5">
             <div class="cart_title">購物車</div>
         </div>
@@ -12,16 +12,18 @@
                 <img class="left_for_pic col-3" :src='cart.product.image'>
                 <div class="main_info col-7">
                     <div class="product_name mb-2">{{cart.product.title}}</div>
-                    <div class="color_size mb-2">黑色-M</div>
-                    <div class="product_num">{{cart.product.num}}{{cart.product.unit}}</div>
+                    <div class="color_size mb-2">您購買了 {{cart.qty}} 台</div>
+                    <div class="product_num">庫存: {{cart.product.num}}{{cart.product.unit}}</div>
                 </div>
                 <div class="price_and_cancel col-2">
-                    <div class="product_price">${{cart.product.price}}</div>
+                    <div class="single_total_price">此項總金額為: {{cart.total | currency}}</div>
+                    <div class="product_price">{{cart.product.price | currency}}</div>
                     <button class="btn btn-danger" @click="delete_cart(cart.id)"><i class="far fa-trash-alt"></i></button>
                 </div>
             </div>
         </div>
         <div class="cart_footer mt-5">
+            <button class="btn btn-primary input_coupons" @click="toggle_input_page">輸入優惠碼</button>
             <div class="row" v-if="add_to_cart_data.length!==0">
                 <div class="col-6 text-right total_product">共{{add_to_cart_data.length}}件</div>
                 <div class="col-3 text-right">
@@ -30,13 +32,12 @@
                     <div class="align-self-end mb-3">小計</div>
                 </div>
                 <div class="col-3 text-right">
-                    <div class="align-self-start mb-3">${{cart_total_price}}</div>
+                    <div class="align-self-start mb-3">{{cart_total_price | currency}}</div>
                     <div class="align-self-center mb-3">$60</div>
-                    <div class="align-self-end mb-3">${{cart_total_price+60}}</div>
+                    <div class="align-self-end mb-3">{{cart_total_price+60 | currency}}</div>
                 </div>
             </div>
             <div class="row empty_cart" v-if="add_to_cart_data.length==0"><h1>購物車是空的 QQ... </h1></div>
-            <button class="btn" @click="toggle_input_page">有優惠碼嗎?</button>
         </div>
     </div>
 
@@ -54,6 +55,7 @@ export default {
     data:function(){
         return {
             show_inputCoupon:false,
+            isLoading:false
         }
     },
 
@@ -87,10 +89,12 @@ methods:{
             }
         },
         delete_cart(id){ /* 此id為特定此list的id,不是product的id  cart.id 即可 */
-            let vm = this
+                this.isLoading = true
+                let vm = this
                 let url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/cart/${id}`
                 this.axios.delete(url).then((res)=>{
                     vm.$emit('reload_data')
+                    vm.isLoading=false
             })
         },
 
@@ -110,6 +114,8 @@ html,body{
     margin: 0;
     padding: 0;
     position: relative;
+    height: 1600px;
+    background-color: #F8F9FA;
 }
 .empty_cart{
     color: #202020;
@@ -131,6 +137,7 @@ html,body{
     position: absolute;
     top: 103px;
     left: 448px;
+
 }
 /* header */
 .cart_header{
@@ -139,7 +146,7 @@ html,body{
     height: 60px;
     /* background-color: #00AEEF;
      */
-    border-bottom: 2px solid #202020;
+    border-bottom: 2px solid #1a1f1a11;
     text-align: center;
     /* vertical-align: center; */
     /* border-radius: 10px; */
@@ -168,7 +175,7 @@ html,body{
 /* main */
 .main{
     position: relative;
-    border-bottom: 2px solid #202020;
+    border-bottom: 2px solid #1a1f1a11;
 }
 .product_name{
     font-size: 28px;
@@ -197,13 +204,15 @@ html,body{
     font-size: 20px;
 }
 /* footer */
-
+.input_coupons{
+    float:right;
+}
 .cart_footer{
     font-size: 20px;
     color: #ec3535;
-    
+
 }
 .total_product{
-    color: #f1f1ff
+    color: #25254b
 }
 </style>
