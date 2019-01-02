@@ -2,22 +2,23 @@
 <div>
     <loading :active.sync="isLoading"></loading>
     <button class="btn btn-primary btn-lg return_button" @click="return_button">返回</button>
-    <Input-coupon v-if="show_inputCoupon" :toggle_input='show_inputCoupon' @inputcoupon_bridge='return_back'></Input-coupon>
+    <!-- 輸入優惠碼 -->
+    <Input-coupon v-if="show_inputCoupon" @inputcoupon_bridge='return_back' @bridge_coupon='get_child_couponPrice'></Input-coupon>
     <div class="container-fluid cart_container" v-if="!show_inputCoupon">
         <div class="cart_header mt-5 mb-5">
             <div class="cart_title">購物車</div>
         </div>
         <div class="main" v-for="cart in add_to_cart_data" :key='cart.id'>
             <div class="row mt-4 mb-4">
-                <img class="left_for_pic col-3" :src='cart.product.image'>
+                <div class="left_for_pic col-3" :style='cart_picture(cart.product.image)'></div>
                 <div class="main_info col-7">
                     <div class="product_name mb-2">{{cart.product.title}}</div>
-                    <div class="color_size mb-2">您購買了 {{cart.qty}} 台</div>
+                    <div class="color_size mb-2">您購買了 {{cart.qty}} {{cart.product.unit}}</div>
                     <div class="product_num">庫存: {{cart.product.num}}{{cart.product.unit}}</div>
                 </div>
                 <div class="price_and_cancel col-2">
-                    <div class="single_total_price">此項總金額為: {{cart.total | currency}}</div>
-                    <div class="product_price">{{cart.product.price | currency}}</div>
+                    <div class="product_price">單項價: {{cart.product.price | currency}}</div>
+                    <div class="single_total_price">總金額: {{cart.total | currency}}</div>
                     <button class="btn btn-danger" @click="delete_cart(cart.id)"><i class="far fa-trash-alt"></i></button>
                 </div>
             </div>
@@ -30,11 +31,13 @@
                     <div class="align-self-start mb-3">商品金額</div>
                     <div class="align-self-center mb-3">運費</div>
                     <div class="align-self-end mb-3">小計</div>
+                    <div class="cheaper_price text-success" v-if="with_couponPrice!==0">套用優惠價格</div>
                 </div>
                 <div class="col-3 text-right">
                     <div class="align-self-start mb-3">{{cart_total_price | currency}}</div>
                     <div class="align-self-center mb-3">$60</div>
                     <div class="align-self-end mb-3">{{cart_total_price+60 | currency}}</div>
+                    <div class="align-self-end-mb-3 text-success" v-if="with_couponPrice!==0">{{with_couponPrice+60 | currency}}</div>
                 </div>
             </div>
             <div class="row empty_cart" v-if="add_to_cart_data.length==0"><h1>購物車是空的 QQ... </h1></div>
@@ -55,7 +58,8 @@ export default {
     data:function(){
         return {
             show_inputCoupon:false,
-            isLoading:false
+            isLoading:false,
+            with_couponPrice:0,
         }
     },
 
@@ -65,13 +69,17 @@ computed:{
         let vm = this
         let num = 0
         this.add_to_cart_data.forEach(item=>{
-            num+=item.final_total
+            num+=parseInt(item.total)
         })
         return num
-    }
+    },
 },
 
 methods:{
+        get_child_couponPrice(p){
+            // console.log('p',p)
+            this.with_couponPrice=p
+        },
         return_back(){
             this.show_inputCoupon=!this.show_inputCoupon
         },
@@ -99,9 +107,6 @@ methods:{
         },
 
 },
-created(){
-
-}
 }
 
 </script>
@@ -110,13 +115,6 @@ created(){
 
 
 <style>
-html,body{
-    margin: 0;
-    padding: 0;
-    position: relative;
-    height: 1600px;
-    background-color: #F8F9FA;
-}
 .empty_cart{
     color: #202020;
     opacity: 0.3;
@@ -134,9 +132,9 @@ html,body{
     width: 50%;
     margin-top: 20px;
     /* border: 1px solid #000; */
-    position: absolute;
+    /* position: absolute;
     top: 103px;
-    left: 448px;
+    left: 448px; */
 
 }
 /* header */
@@ -182,11 +180,7 @@ html,body{
     color: #202020;
     font-weight: 550;
 }
-.left_for_pic{
-    height: 140px;
-    background-size: cover;
-    background-position: center center;
-}
+
 .color_size{
     color: #f8911b9f
 }

@@ -26,7 +26,7 @@
         <!-- jumbotron -->
         <div class="jumbotron jumbotron-fluid mt-5"  v-show="show_detail && !show_cart">
                 <div class="container">
-                    <h1 class="display-3">世界頂級蛋糕狂銷中 ...</h1>
+                    <h1 class="display-3">享受嘴上的奢華!</h1>
                     <p class="lead">This is a modified jumbotron that occupies
                                     the entire horizontal space of its parent.</p>
                 </div>
@@ -58,6 +58,7 @@
             <div class="fly_box" :style="picture(flypicture)" v-if="flypicture"></div>
         </div>
     </div>
+    <!-- footer -->
     <div class="home_footer container-fluid">
         <span>© Copright 2018 Ziting蛋糕專賣店</span>
         <a href="#"><i class="fab fa-facebook-square"></i>FACEBOOK</a>
@@ -156,6 +157,7 @@ export default {
             this.axios.post(url,{data:cart}).then((res)=>{
                 // console.log('add_to_cart,HOME',res)
                 vm.get_carts()
+                console.log('加入購物車',res)
             })
         },
         get_carts(){
@@ -191,15 +193,16 @@ export default {
 html,body{
     font-family: 'Noto Sans TC';
     font-size: 14px;
-    position: relative;
+    /* position: relative; */
     padding: 0;
     margin: 0;
 }
 .home_footer{
     width: 100%;
     height: 170px;
-    position: absolute;
+    position: relative;
     bottom: 0;
+    /* margin-top: 170px; */
     background-color: #E9ECEF;
     display: flex;
     justify-content: center;
@@ -230,9 +233,8 @@ html,body{
 .cprs{
     background-color: #F8F9FA;
     height: 100%;
-    position: relative;
-    padding: 0;
-    
+    /* position: relative; */
+    /* padding-bottom: 170px; */
 }
 .fly_box{
     width: 60px;

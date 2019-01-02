@@ -15,9 +15,9 @@
         </div>
         <div class="ok_icon mt-5">
             <i class="fas fa-check-circle" v-show="is_show"></i>
-            <span class="ml-2" v-show="is_show">已套用優惠券</span>
+            <span class="ml-2" v-if="is_show">已套用優惠券</span>
             <i class="fas fa-times-circle" v-show="has_coupon && !is_show"></i>
-            <span class="ml-2" v-show="has_coupon && !is_show">找不到優惠券</span>
+            <span class="ml-2" v-if="has_coupon && !is_show">找不到優惠券</span>
         </div>
     </div>
 
@@ -33,7 +33,8 @@ data(){
     return{
         coupon_codes:'',
         is_show:false,
-        has_coupon:false
+        has_coupon:false,
+        coupon_price:0
     }
 },
 
@@ -48,7 +49,10 @@ methods:{
         this.axios.post(url,{data:coupon}).then((res)=>{
             console.log('inputCoupon',res)
             if(res.data.success){
-                this.is_show=true
+                vm.is_show=true
+                vm.coupon_price = res.data.data.final_total
+                console.log('vm.coupon_price',vm.coupon_price)
+                vm.$emit('bridge_coupon',vm.coupon_price)
             }else{
                 vm.has_coupon = true
             }
@@ -79,5 +83,8 @@ methods:{
 }
 .fa-times-circle{
     font-size: 40px;
+}
+.form-control{
+    width: 100px;
 }
 </style>

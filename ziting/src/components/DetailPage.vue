@@ -10,12 +10,13 @@
                 <div class="price together">特價: {{detail_data.price | currency}}</div>
                 <div class="describe together">{{detail_data.description}}</div>
             </div>
-            <select class="custom-select" v-model="buy_num">
+            <div class="wrap">
+                <select class="custom-select" v-model="buy_num">
                 <option selected="">選擇數量</option>
                 <option  v-for="n in 10" :key="n.id" :value="n">{{n}}</option>
-            </select>
-
-            <button class="btn btn-success float-right mt-5" @click="dp_addtocart(detail_data.id,buy_num)">加入購物車</button>
+                </select>
+                <button class="btn btn-success" @click="dp_addtocart(detail_data.id,buy_num)">加入購物車</button>
+            </div>
         </div>
     </div>
 </template>
@@ -67,6 +68,11 @@ export default {
     box-shadow: 5px 5px 15px;
     border-radius: 18px;
 }
+.wrap{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .title{
     font-size: 50px;
     text-align: center;
@@ -81,10 +87,14 @@ export default {
     padding: 10px;
     transform: translateY(-10px);
     text-align: center;
-
+    width: 400px;
+    margin: 10px auto;
 }
 .together:hover{
     background-color: #a9e9d5;
     /* transition: 0.5s */
+}
+.custom-select{
+    width: 300px;
 }
 </style>
