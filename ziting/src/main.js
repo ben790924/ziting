@@ -14,6 +14,7 @@ import 'vue-loading-overlay/dist/vue-loading.css'
 import eventBus from './setup/eventBus'
 import currencyFilter from '../src/filter/currency'
 import timestapmFilter from '../src/filter/timestamp'
+import mapobjectFilter from '../src/filter/mapobject'
 Vue.use(VueAxios, axios)
 Vue.use(VeeValidate)
 VeeValidate.Validator.localize('zh-TW',VeeCht)
@@ -21,6 +22,7 @@ Vue.component('Loading',Loading)
 Vue.config.productionTip = false
 Vue.filter('currency',currencyFilter)
 Vue.filter('timestamp',timestapmFilter)
+Vue.filter('mapfilter',mapobjectFilter)
 axios.defaults.withCredentials = true
 /* eslint-disable no-new */
 

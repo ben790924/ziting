@@ -18,7 +18,7 @@
                     <td width='400'>{{item.create_at | timestamp}}</td>
                     <td width='150'>{{item.user.name}}</td>
                     <td width='200'>{{item.user.email}}</td>
-                    <td width='200'>asdadasdadadasd</td>
+                    <td width='200'>{{item.products | mapfilter}}</td>
                     <td width='200'>{{item.total | currency}}</td>
                     <td>{{item.is_paid}}</td>
                 </tr>
