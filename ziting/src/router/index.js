@@ -9,6 +9,7 @@ import ProductList from '@/components/pages/ProductList'
 import DetailPage from '../components/DetailPage'
 import SoldList from '../components/SoldList'
 import Coupon from '../components/Coupon'
+import Checkout from '../components/Checkout'
 export default new VueRouter({
     routes:[
         {
@@ -26,7 +27,6 @@ export default new VueRouter({
             path:'/',
             component:Home,
             children:[
-
             ]
         },
         {
@@ -38,7 +38,7 @@ export default new VueRouter({
             name:'Lists',
             path:'/lists',
             component:ProductList,
-            // meta: { requiresAuth: true }, 暫時關掉
+            meta: { requiresAuth: true }
 
         },
         {
@@ -53,5 +53,10 @@ export default new VueRouter({
             component:Coupon
 
         },
+        {
+            name:'Checkout',
+            path:'/checkout/:orderId',
+            component:Checkout
+        }
     ]
 })

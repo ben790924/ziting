@@ -24,7 +24,6 @@
             </div>
         </div>
         <div class="cart_footer mt-5">
-            <button class="btn btn-primary input_coupons" @click="toggle_input_page">輸入優惠碼</button>
             <div class="row" v-if="add_to_cart_data.length!==0">
                 <div class="col-6 text-right total_product">共{{add_to_cart_data.length}}件</div>
                 <div class="col-3 text-right">
@@ -40,16 +39,59 @@
                     <div class="align-self-end-mb-3 text-success" v-if="with_couponPrice!==0">{{with_couponPrice+60 | currency}}</div>
                 </div>
             </div>
+            <div class="row justify-content-end mt-5 mb-5">
+                <div class="col-1"><button class="btn btn-success input_coupons" @click="toggle_input_page">輸入優惠碼</button></div>
+                <div class="col-1 text-right"><button class="btn btn-danger" @click="togglePayorder">付款結帳去</button></div>
+            </div>
             <div class="row empty_cart" v-if="add_to_cart_data.length==0"><h1>購物車是空的 QQ... </h1></div>
         </div>
     </div>
+    <!-- 輸入個資 -->
+    <div class="payOrder row justify-content-center" v-if="showInput">
+        <form class="col-md-6" @submit.prevent="pay_orders">
+            <div class="form-group">
+            <label for="useremail">Email</label>
+            <input v-validate="'required|email'" type="email" class="form-control" :class="{'is-invalid':errors.has('email')}" name="email" id="useremail"
+                v-model="form.user.email" placeholder="請輸入 Email">
+            <span class="text-danger" v-if="errors.has('email')">{{errors.first('email')}}</span>
+            </div>
 
+            <div class="form-group">
+            <label for="username">收件人姓名</label>
+            <input type="text" class="form-control" v-validate="'required'" name="name" id="username"
+                v-model="form.user.name" placeholder="輸入姓名" :class="{'is-invalid':errors.has('name')}">
+            <span class="text-danger" v-if="errors.has('name')">姓名必須輸入</span>
+            </div>
+
+                <div class="form-group">
+            <label for="usertel">收件人電話</label>
+            <input v-validate="'required'" type="tel" name='tel' :class="{'is-invalid':errors.has('tel')}" class="form-control" id="usertel" v-model="form.user.tel" placeholder="請輸入電話">
+            <span class="text-danger" v-if="errors.has('tel')">電話必須輸入</span>
+            </div>
+
+            <div class="form-group">
+            <label for="useraddress">收件人地址</label>
+            <input v-validate="'required'" type="address" class="form-control" :class="{'is-invalid':errors.has('address')}" name="address" id="useraddress" v-model="form.user.address"
+                placeholder="請輸入地址">
+            <span class="text-danger" v-if="errors.has('address')">地址欄位不得留空</span>
+            </div>
+
+            <div class="form-group">
+            <label for="useraddress">留言</label>
+            <textarea name="" id="" class="form-control" cols="30" rows="10" v-model="form.message"></textarea>
+            </div>
+            <div class="text-right">
+            <button class="btn btn-danger">送出訂單</button>
+            </div>
+        </form>
+    </div>
 </div>
 
 </template>
 
 <script>
 import InputCoupon from './InputCoupon'
+import $ from 'jquery'
 export default {
     components:{
         InputCoupon
@@ -60,6 +102,16 @@ export default {
             show_inputCoupon:false,
             isLoading:false,
             with_couponPrice:0,
+            form:{
+                user:{
+                    name:'',
+                    email:'',
+                    tel:'',
+                    address:''
+                },
+                message:''
+            },
+            showInput:false
         }
     },
 
@@ -76,6 +128,9 @@ computed:{
 },
 
 methods:{
+        togglePayorder(){
+            this.showInput = !this.showInput
+        },
         get_child_couponPrice(p){
             // console.log('p',p)
             this.with_couponPrice=p
@@ -105,6 +160,30 @@ methods:{
                     vm.isLoading=false
             })
         },
+        pay_orders(){
+                this.isLoading = true
+                let vm = this
+                let url = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/order`
+                // vm.$nextTick(()=>{
+                //         $(window).animate({scrollTop:$('.payOrder').offset().top},1000)
+                // })無作用
+                this.$validator.validate().then((result) => {
+                    if (result) {
+                    this.axios.post(url,{data:vm.form}).then((res)=>{
+                    console.log('payOrders',res)
+                    if(res.data.success){
+                        vm.isLoading=false
+                        vm.$router.push(`/checkout/${res.data.orderId}`)
+                    }
+
+            })
+                    }else{
+                        alert('欄位不正確')
+                        vm.isLoading=false
+                    }
+                });
+        },
+        
 
 },
 }
@@ -174,6 +253,7 @@ methods:{
 .main{
     position: relative;
     border-bottom: 2px solid #1a1f1a11;
+
 }
 .product_name{
     font-size: 28px;

@@ -7,7 +7,7 @@
         </div>
         <div class="main">
             <div class="input-group">
-                <input type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1" v-model="coupon_codes">
+                <input type="text" class="form-control inputCinput" placeholder="" aria-label="" aria-describedby="basic-addon1" v-model="coupon_codes">
                 <div class="input-group-append">
                     <button class="btn btn-success" type="button" @click="input_coupon">確認</button>
                 </div>
@@ -84,7 +84,7 @@ methods:{
 .fa-times-circle{
     font-size: 40px;
 }
-.form-control{
+.inputCinput{
     width: 100px;
 }
 </style>

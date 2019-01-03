@@ -199,7 +199,7 @@ html,body{
 }
 .home_footer{
     width: 100%;
-    height: 170px;
+    height: 150px;
     position: relative;
     bottom: 0;
     /* margin-top: 170px; */

@@ -6,15 +6,21 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import router from './router'
 import {TweenMax, Power2, TimelineLite} from "gsap/TweenMax"
+import VeeValidate from 'vee-validate'
+import VeeCht from '../node_modules/vee-validate/dist/locale/zh_TW'
 import 'bootstrap'
 import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/vue-loading.css'
 import eventBus from './setup/eventBus'
 import currencyFilter from '../src/filter/currency'
+import timestapmFilter from '../src/filter/timestamp'
 Vue.use(VueAxios, axios)
+Vue.use(VeeValidate)
+VeeValidate.Validator.localize('zh-TW',VeeCht)
 Vue.component('Loading',Loading)
 Vue.config.productionTip = false
 Vue.filter('currency',currencyFilter)
+Vue.filter('timestamp',timestapmFilter)
 axios.defaults.withCredentials = true
 /* eslint-disable no-new */
 
