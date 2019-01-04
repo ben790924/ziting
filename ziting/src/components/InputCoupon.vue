@@ -85,6 +85,6 @@ methods:{
     font-size: 40px;
 }
 .inputCinput{
-    width: 100px;
+    width: 50px;
 }
 </style>

@@ -44,13 +44,15 @@ export default new VueRouter({
         {
             name:'SoldList',
             path:'/soldlist',
-            component:SoldList
+            component:SoldList,
+            meta: { requiresAuth: true }
 
         },
         {
             name:'Coupon',
             path:'/lists/coupon',
-            component:Coupon
+            component:Coupon,
+            meta: { requiresAuth: true }
 
         },
         {

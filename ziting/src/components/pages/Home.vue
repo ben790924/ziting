@@ -7,10 +7,7 @@
                 <router-link class="nav-link nav_text" to="/">首頁</router-link>
             </li>
             <li class="nav-item">
-                <router-link class="nav-link nav_text" to="/lists">管理員介面</router-link>
-            </li>
-            <li class="nav-item">
-                <router-link class="nav-link nav_text" to="/soldlist">SOLDLIST</router-link>
+                <router-link class="nav-link nav_text" to="/lists">管理員</router-link>
             </li>
             <li class="nav-item">
                 <router-link class="nav-link nav_text" to="/login">登入</router-link>
@@ -24,9 +21,9 @@
         </ul>
 
         <!-- jumbotron -->
-        <div class="jumbotron jumbotron-fluid mt-5"  v-show="show_detail && !show_cart">
+        <div class="jumbotron jumbotron-fluid mt-5 jumbotronEdit"  v-show="show_detail && !show_cart">
                 <div class="container">
-                    <h1 class="display-3">享受嘴上的奢華!</h1>
+                    <h1 class="display-2">享受嘴上的奢華!</h1>
                     <p class="lead">This is a modified jumbotron that occupies
                                     the entire horizontal space of its parent.</p>
                 </div>
@@ -60,7 +57,7 @@
     </div>
     <!-- footer -->
     <div class="home_footer container-fluid">
-        <span>© Copright 2018 Ziting蛋糕專賣店</span>
+        <span>© Copyright 2018 Ziting蛋糕專賣店</span>
         <a href="#"><i class="fab fa-facebook-square"></i>FACEBOOK</a>
         <a href="#"><i class="fab fa-instagram"></i>INSTAGRAM</a>
         <a href="#"><i class="fab fa-twitter-square"></i>TWITTER</a>
@@ -229,6 +226,22 @@ html,body{
 .home_footer a::after{
     content: '|';
     margin-left: 10px;
+}
+.jumbotronEdit{
+    background-image: url('../../assets/brooke-lark-176362-unsplash.jpg');
+    background-size: cover;
+    background-position: center center
+}
+.jumbotronEdit h1{
+    font-weight: bold;
+    text-shadow: 3px 3px rgb(25, 26, 27);
+    color: #F8F9FA
+}
+.jumbotronEdit p{
+    color: rgb(255, 145, 2);
+    text-shadow:2px 2px black;
+    font-size: 25px;
+    font-weight: bold;
 }
 .cprs{
     background-color: #F8F9FA;

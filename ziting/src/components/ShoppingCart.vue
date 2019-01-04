@@ -40,8 +40,8 @@
                 </div>
             </div>
             <div class="row justify-content-end mt-5 mb-5">
-                <div class="col-1"><button class="btn btn-success input_coupons" @click="toggle_input_page">輸入優惠碼</button></div>
-                <div class="col-1 text-right"><button class="btn btn-danger" @click="togglePayorder">付款結帳去</button></div>
+                <div class="col-1"><button class="btn btn-success input_coupons" @click="toggle_input_page" :disabled='add_to_cart_data.length==0'>輸入優惠碼</button></div>
+                <div class="col-1 text-right"><button class="btn btn-danger" @click="togglePayorder" v-if="!add_to_cart_data.length==0">付款結帳去</button></div>
             </div>
             <div class="row empty_cart" v-if="add_to_cart_data.length==0"><h1>購物車是空的 QQ... </h1></div>
         </div>
