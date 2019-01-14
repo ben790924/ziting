@@ -3,68 +3,73 @@
         <div class="vld-parent">
             <loading :active.sync="isLoading"></loading>
         </div>
-        <div class="container">
+        <div class="container testfontsize">
             <!-- navbar -->
-            <nav class="navbar navbar-expand-lg navbar-light bg-light mt-2">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <router-link to='/' class="nav-link">首頁</router-link>
-                        </li>
-                        <li class="nav-item">
-                            <router-link to='/soldlist' class="nav-link">訂單列表</router-link>
-                        </li>
-                        <li class="nav-item">
-                            <router-link to='lists/Coupon' class="nav-link">優惠券</router-link>
-                        </li>
-                        <li class="nav-item">
+                                <router-link to='/' class="nav-link">首頁</router-link>
+                            </li>
+                            <li class="nav-item">
+                                <router-link to='/soldlist' class="nav-link">訂單列表</router-link>
+                            </li>
+                            <li class="nav-item">
+                                <router-link to='lists/Coupon' class="nav-link">優惠券</router-link>
+                            </li>
+                            <li class="nav-item">
                         </li>
                     </ul>
-                    <button class="btn btn-sm btn-success" style="float:right" @click="logout">登出</button>
+                <button class="btn btn-sm btn-success nav_btn" @click="logout">登出</button>
                 </div>
             </nav>
-
             <!-- 輪播圖 -->
-            <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-                <div class="carousel-inner" v-for="(pic,num) in products" :key="pic.id">
-                    <div class="carousel-item" :class="{'active':num+1===products_length}">
-                        <img class="d-block w-100" :src="pic.image">
+            <!-- <div class="row justify-content-center">
+                <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner" v-for="(pic,num) in products" :key="pic.id">
+                        <div class="carousel-item" :class="{'active':num+1===products_length}">
+                            <img class="d-block w-100" :src="pic.image">
+                        </div>
                     </div>
-                </div>
-                <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true" @click="minus_length"></span>
-                    <span class="sr-only">Previous</span>
-                </a>
-                <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true" @click="plus_length"></span>
-                    <span class="sr-only">Next</span>
-                </a>
-            </div>
+                    <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true" @click="minus_length"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true" @click="plus_length"></span>
+                        <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                </div> -->
             <!-- 表個內容 -->
-            <table class="table table-lg-responsive table-hover">
+                <table class="table table-hover">
                 <thead class="thead-light">
                     <tr>
-                        <th width='150'>產品名稱</th>
-                        <th width='100'>分類</th>
-                        <th width='150'>原價</th>
-                        <th width='150'>售價</th>
-                        <th width='70'>數量</th>
-                        <th width='100'>操作</th>
-                        <th><button class="btn btn-secondary" @click.prevent="show_modal(true,temp_product)">新增產品</button></th>
+                        <th scope="col">產品名稱</th>
+                        <th scope="col">分類</th>
+                        <th scope="col">原價</th>
+                        <th scope="col">售價</th>
+                        <th scope="col">數量</th>
+                        <th scope="col">操作</th>
+                        <th scope="col"><button class="btn btn-secondary" @click.prevent="show_modal(true,temp_product)">add</button></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="item in products" :key="item.id" class="table-light">
-                        <td>{{item.title}}</td>
+                        <th scope='row'>{{item.title}}</th>
                         <td>{{item.category}}</td>
                         <td class="text-right">{{item.origin_price | currency}}</td>
                         <td class="text-right">{{item.price | currency}}</td>
                         <td>{{item.num}}/{{item.unit}}</td>
-                        <td><button class="btn btn-sm btn-outline-primary" @click.prevent="show_modal(false,item)">編輯</button></td>
-                        <td><button class="btn btn-danger btn-sm" @click="delete_product(item.id)">刪除產品</button></td>
+                        <td><button class="btn btn-sm btn-outline-primary" @click.prevent="show_modal(false,item)">edit</button></td>
+                        <td><button class="btn btn-danger btn-sm" @click="delete_product(item.id)">del</button></td>
                     </tr>
                 </tbody>
-            </table>
+                </table>
+            
         </div>
 
 
@@ -285,5 +290,16 @@ body{
 }
 .table{
     text-align: center;
+}
+.nav_btn{
+    float: right;
+}
+@media(max-width: 767px){
+    .nav_btn{
+        float: left;
+    }
+    .testfontsize{
+        /* font-size: 10px; */
+    }
 }
 </style>

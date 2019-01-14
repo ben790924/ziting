@@ -2,27 +2,28 @@
 <div>
     <loading :active.sync="isLoading"></loading>
     <div class="container-fluid cprs">
-        <ul class="nav nav_bg">
-            <li class="nav-item">
-                <router-link class="nav-link nav_text" to="/">首頁</router-link>
-            </li>
-            <li class="nav-item">
-                <router-link class="nav-link nav_text" to="/lists">管理員</router-link>
-            </li>
-            <li class="nav-item">
-                <router-link class="nav-link nav_text" to="/login">登入</router-link>
-            </li>
-            <li class="footer" v-if="show_detail && !show_cart">
-                <button class="btn btn-lg cart_btn" @click="cart_button">
-                <i class="fas fa-shopping-cart"></i>
-                </button>
-                <div class="cart_num">{{cart_datas.length}}</div>
-            </li>
-        </ul>
-
+        <div class="row">
+            <ul class="nav nav_bg">
+                <li class="nav-item">
+                    <router-link class="nav-link nav_text" to="/">首頁</router-link>
+                </li>
+                <li class="nav-item">
+                    <router-link class="nav-link nav_text" to="/lists">管理員</router-link>
+                </li>
+                <li class="nav-item">
+                    <router-link class="nav-link nav_text" to="/login">登入</router-link>
+                </li>
+                <li class="footer" v-if="show_detail && !show_cart">
+                    <button class="btn btn-lg cart_btn" @click="cart_button">
+                    <i class="fas fa-shopping-cart"></i>
+                    </button>
+                    <div class="cart_num">{{cart_datas.length}}</div>
+                </li>
+            </ul>
+        </div>
         <!-- jumbotron -->
         <div class="jumbotron jumbotron-fluid mt-5 jumbotronEdit"  v-show="show_detail && !show_cart">
-                <div class="container">
+                <div class="container bannerClass text-center">
                     <h1 class="display-2">享受嘴上的奢華!</h1>
                     <p class="lead">This is a modified jumbotron that occupies
                                     the entire horizontal space of its parent.</p>
@@ -35,8 +36,6 @@
             <Detail-page v-if="!show_detail" :detail_data='detail_datas' @bridge='parent_method'></Detail-page>
             <!--  原有的購物頁面 -->
             <div class="row" v-show="show_detail && !show_cart">
-                <div class="col">
-                    <div class="row">
                         <div class="col-md-3 text-center" v-for="item in products" :key="item.id">
                             <div class="out_cover">
                                 <div class="cover listMg" :style='picture(item.image)'></div>
@@ -47,8 +46,6 @@
                             <button class="btn btn-success btn-sm" @click="detail_page(item.id)">查看詳情</button>
                             <button class="btn btn-danger btn-sm" @click="add_to_cart(item.id,item.qty,$event,item.image)">加入購物車</button>
                         </div>
-                    </div>
-                </div>
             </div>
             <!-- shoppingCart -->
             <Shopping-cart :add_to_cart_data='cart_datas' @reload_data='parent_reload_data' @child_return_button='cart_button' v-if="show_cart"></Shopping-cart>
@@ -230,11 +227,11 @@ html,body{
 .jumbotronEdit{
     background-image: url('../../assets/brooke-lark-176362-unsplash.jpg');
     background-size: cover;
-    background-position: center center
+    background-position: center center;
 }
 .jumbotronEdit h1{
     font-weight: bold;
-    text-shadow: 3px 3px rgb(25, 26, 27);
+    
     color: #F8F9FA
 }
 .jumbotronEdit p{
@@ -252,7 +249,7 @@ html,body{
 .fly_box{
     width: 60px;
     height: 80px;
-    /* background-color: #004040; */
+    /* background-color: black; */
     position: fixed;
     right: 200px;
     top: 16px;
@@ -292,7 +289,7 @@ html,body{
     float:right;
 }
 .out_cover{
-    width: 250px;
+    /* width: 250px; */
     height: 190px;
     overflow: hidden;
     margin: auto;
@@ -344,6 +341,61 @@ color: #feffff;
     padding: 0;
     background-color: #00aeef;
 
+}
+@media (max-width: 767px){
+    .nav_bg{
+        width: 102%;
+        left: -5px;
+    }
+    .footer{
+        position: absolute;
+        right: 20px;
+        top:10px;
+    }
+    .bannerClass h1{
+        font-size: 42px;
+    }
+    .bannerClass p{
+        font-size: 25px;
+    }
+    .home_footer{
+    width: 100%;
+    height: 100px;
+    position: relative;
+    bottom: 0;
+    /* margin-top: 170px; */
+    background-color: #E9ECEF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.5s;
+}
+.home_footer span{
+    font-size: 10px;
+    font-family:'Noto Sans TC';
+    transition: 0.5s;
+    text-align: center;
+}
+.home_footer a{
+    margin-left: 6px;
+    color:black;
+    transition: 0.5s;
+    font-size: 10px;
+    text-align: center
+}
+.home_footer a:hover{
+    transform: scale(1.1);
+    transition: 0.5s;
+}
+.home_footer i{
+    margin-right: 5px;
+    font-size: 20px;
+    
+}
+.home_footer a::after{
+    content: '|';
+    margin-left: 5px;
+}
 }
 
 </style>

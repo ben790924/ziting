@@ -1,7 +1,7 @@
 <template>
 <div>
     <loading :active.sync="isLoading"></loading>
-    <button class="btn btn-primary btn-lg return_button" @click="return_button">返回</button>
+    <button class="btn btn-primary btn-sm return_button" @click="return_button">返回</button>
     <!-- 輸入優惠碼 -->
     <Input-coupon v-if="show_inputCoupon" @inputcoupon_bridge='return_back' @bridge_coupon='get_child_couponPrice'></Input-coupon>
     <div class="container-fluid cart_container" v-if="!show_inputCoupon">
@@ -10,23 +10,23 @@
         </div>
         <div class="main" v-for="cart in add_to_cart_data" :key='cart.id'>
             <div class="row mt-4 mb-4">
-                <div class="left_for_pic col-3" :style='cart_picture(cart.product.image)'></div>
-                <div class="main_info col-7">
+                <div class="left_for_pic col-5" :style='cart_picture(cart.product.image)'></div>
+                <div class="main_info col-4">
                     <div class="product_name mb-2">{{cart.product.title}}</div>
-                    <div class="color_size mb-2">您購買了 {{cart.qty}} {{cart.product.unit}}</div>
+                    <div class="color_size mb-2">您購買了 <strong>{{cart.qty}}</strong> {{cart.product.unit}}</div>
                     <div class="product_num">庫存: {{cart.product.num}}{{cart.product.unit}}</div>
                 </div>
-                <div class="price_and_cancel col-2">
+                <div class="price_and_cancel col-3">
                     <div class="product_price">單項價: {{cart.product.price | currency}}</div>
                     <div class="single_total_price">總金額: {{cart.total | currency}}</div>
-                    <button class="btn btn-danger" @click="delete_cart(cart.id)"><i class="far fa-trash-alt"></i></button>
+                    <button class="btn btn-danger btn-sm" @click="delete_cart(cart.id)"><i class="far fa-trash-alt"></i></button>
                 </div>
             </div>
         </div>
         <div class="cart_footer mt-5">
             <div class="row" v-if="add_to_cart_data.length!==0">
-                <div class="col-6 text-right total_product">共{{add_to_cart_data.length}}件</div>
-                <div class="col-3 text-right">
+                <div class="col-5 text-right total_product">共{{add_to_cart_data.length}}件</div>
+                <div class="col-4 text-right">
                     <div class="align-self-start mb-3">商品金額</div>
                     <div class="align-self-center mb-3">運費</div>
                     <div class="align-self-end mb-3">小計</div>
@@ -40,8 +40,8 @@
                 </div>
             </div>
             <div class="row justify-content-end mt-5 mb-5">
-                <div class="col-1"><button class="btn btn-success input_coupons" @click="toggle_input_page" :disabled='add_to_cart_data.length==0'>輸入優惠碼</button></div>
-                <div class="col-1 text-right"><button class="btn btn-danger" @click="togglePayorder" v-if="!add_to_cart_data.length==0">付款結帳去</button></div>
+                <div class="col-8"><button class="btn btn-success input_coupons" @click="toggle_input_page" :disabled='add_to_cart_data.length==0'>輸入優惠碼</button></div>
+                <div class="col-4 text-right"><button class="btn btn-danger" @click="togglePayorder" v-if="!add_to_cart_data.length==0">付款結帳去</button></div>
             </div>
             <div class="row empty_cart" v-if="add_to_cart_data.length==0"><h1>購物車是空的 QQ... </h1></div>
         </div>
@@ -204,7 +204,7 @@ methods:{
 }
 .return_button{
     position: absolute;
-    left:280px;
+    left:260px;
     top:170px;
 }
 .cart_container{
@@ -288,5 +288,30 @@ methods:{
 }
 .total_product{
     color: #25254b
+}
+@media(max-width: 767px){
+    .return_button{
+    position: absolute;
+    left:278px;
+    top:65px;
+}
+.cart_container{
+    width: 100%;
+    margin-top: 20px;
+}
+.color_size,.product_num{
+    font-size: 15px;
+}
+.product_name{
+    font-size: 15px;
+}
+.product_price,.single_total_price{
+    font-size: 15px;
+    float: left;
+    margin-bottom: 5px;
+}
+.cart_footer{
+    font-size: 14px;
+}
 }
 </style>

@@ -1,30 +1,34 @@
 <template>
     <div>
         <!-- navbar -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light mt-2">
+            <!-- .... -->
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <router-link to='/' class="nav-link">首頁</router-link>
-                        </li>
-                        <li class="nav-item">
-                            <router-link to='/soldlist' class="nav-link">訂單列表</router-link>
-                        </li>
-                        <li class="nav-item">
-                            <router-link to='lists' class="nav-link">管理員介面</router-link>
-                        </li>
-                        <li class="nav-item">
+                                <router-link to='/' class="nav-link">首頁</router-link>
+                            </li>
+                            <li class="nav-item">
+                                <router-link to='/soldlist' class="nav-link">訂單列表</router-link>
+                            </li>
+                            <li class="nav-item">
+                                <router-link to='lists' class="nav-link">管理員介面</router-link>
+                            </li>
+                            <li class="nav-item">
                         </li>
                     </ul>
-                    
                 </div>
             </nav>
+            <!-- .... -->
         <!-- modal -->
     <div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">新增優惠券</h5>
+                <h5 class="modal-title" id="exampleModalLabel">add</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -65,22 +69,20 @@
         <table class="table container mt-5 table-hover">
             <thead class="thead-light">
                 <tr>
-                    <th>Title</th>
-                    <th>是否起用</th>
-                    <th>折扣百分比</th>
-                    <th>到期日</th>
-                    <th>折扣碼</th>
-                    <th><button class="btn btn-info" @click='show_modal(coupon,true)'>新增優惠券</button></th>
+                    <th scope='col'>標題</th>
+                    <th scope='col'>幾折</th>
+                    <th scope='col'>到期日</th>
+                    <th scope='col'>折扣碼</th>
+                    <th scope='col'><button class="btn btn-info" @click='show_modal(coupon,true)'>add</button></th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="(list,i) in coupon_list" :key='`${i}-${list.id}`'>
-                    <td>{{list.title}}</td>
-                    <td>{{list.is_enabled}}</td>
+                    <th scope="row">{{list.title}}</th>
                     <td>{{list.percent}}</td>
                     <td>{{list.due_date}}</td>
                     <td>{{list.code}}</td>
-                    <td><button class="btn btn-warning mr-2" @click="show_modal(list,false)">修改</button><button class="btn btn-danger" @click="delete_coupon(list.id)">刪除</button></td>
+                    <td><button class="btn btn-warning mr-2" @click="show_modal(list,false)">edit</button><button class="btn btn-danger" @click="delete_coupon(list.id)">del</button></td>
                 </tr>
             </tbody>
         </table>
