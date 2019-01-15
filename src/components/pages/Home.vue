@@ -140,7 +140,7 @@ export default {
                 qty
             }
             this.$nextTick(()=>{
-                TweenMax.from('.fly_box',1,{
+                TweenMax.from('.fly_box',2,{
                 left:$(target).offset().left,
                 top:$(target).offset().top,
                 opacity:1,
@@ -395,6 +395,17 @@ color: #feffff;
 .home_footer a::after{
     content: '|';
     margin-left: 5px;
+}
+.fly_box{
+    width: 60px;
+    height: 80px;
+    /* background-color: black; */
+    position: fixed;
+    right: 40px;
+    top: 10px;
+    opacity: 0;
+    /* z-index: 2; */
+
 }
 }
 
